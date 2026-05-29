@@ -8,6 +8,18 @@ export const createScenario = (data) => {
   return request.post('/api/training/scenarios', data)
 }
 
+export const updateScenario = (id, data) => {
+  return request.put(`/api/training/scenarios/${id}`, data)
+}
+
+export const deleteScenario = (id) => {
+  return request.delete(`/api/training/scenarios/${id}`)
+}
+
+export const publishScenario = (id) => {
+  return request.put(`/api/training/scenarios/${id}/publish`)
+}
+
 export const getTraineeList = (params) => {
   return request.get('/api/training/trainees', { params })
 }

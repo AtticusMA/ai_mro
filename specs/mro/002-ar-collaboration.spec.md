@@ -4,9 +4,9 @@ title: AR智慧维修协作平台
 domain: mro
 status: approved
 owner: '@product'
-version: 1.0.0
+version: 1.1.0
 created: 2026-05-25
-updated: 2026-05-26
+updated: 2026-05-29
 charter: CHARTER.md
 supersedes: []
 depends-on: []
@@ -304,3 +304,4 @@ public record VideoArchiveDTO(
 |------|------|------|
 | 0.1.0 | 2026-05-25 | 初稿 |
 | 1.0.0 | 2026-05-26 | 补充后端实现约束（JSON Schema / Dubbo 接口 / 错误码） |
+| 1.1.0 | 2026-05-29 | 前端增强：呼叫专家弹窗（专家选择器）、巡检实时异常面板 |

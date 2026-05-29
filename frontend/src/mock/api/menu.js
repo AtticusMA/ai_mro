@@ -24,6 +24,7 @@ const buildUserTree = (list, permissions) => {
 
 let _menus = [
   { id: 1,  parentId: 0, name: '仪表板',   type: 'C', icon: 'Odometer',     path: '/dashboard',    component: 'Dashboard',          permission: '',                  sort: 1, status: 1 },
+  { id: 130, parentId: 0, name: '数据分析', type: 'C', icon: 'TrendCharts',  path: '/analytics',    component: 'AnalyticsDashboard', permission: 'dashboard:view',    sort: 1.5, status: 1 },
   { id: 2,  parentId: 0, name: '系统管理', type: 'M', icon: 'Setting',       path: '/system',       component: '',                   permission: '',                  sort: 99, status: 1 },
   { id: 3,  parentId: 2, name: '用户管理', type: 'C', icon: 'User',          path: '/system/user',  component: 'system/UserManage',  permission: 'system:user:list',  sort: 1, status: 1 },
   { id: 4,  parentId: 3, name: '用户新增', type: 'F', icon: '',              path: '',              component: '',                   permission: 'system:user:add',   sort: 1, status: 1 },
@@ -71,6 +72,9 @@ let _menus = [
   { id: 93, parentId: 90, name: '领料申请', type: 'C', icon: 'DocumentCopy',  path: '/mro/tool/material-request', component: 'mro/tool/MaterialRequestList', permission: 'material:list', sort: 3, status: 1 },
   { id: 95, parentId: 0,  name: 'VR培训',   type: 'M', icon: 'View',          path: '/mro/training',         component: '',                    permission: '',                  sort: 8, status: 1 },
   { id: 96, parentId: 95, name: '培训概览', type: 'C', icon: 'DataLine',      path: '/mro/training',         component: 'mro/training/TrainingOverview',permission: 'train:assign',sort: 1, status: 1 },
+  { id: 97, parentId: 95, name: '场景管理', type: 'C', icon: 'Film',          path: '/mro/training/scenarios', component: 'mro/training/ScenarioManagement',permission: 'train:assign',sort: 2, status: 1 },
+  { id: 98, parentId: 95, name: '学员列表', type: 'C', icon: 'User',          path: '/mro/training/trainees',  component: 'mro/training/TraineeList',permission: 'train:assign',sort: 3, status: 1 },
+  { id: 99, parentId: 95, name: '培训任务', type: 'C', icon: 'Finished',      path: '/mro/training/sessions',  component: 'mro/training/SessionManagement',permission: 'train:assign',sort: 4, status: 1 },
   { id: 100, parentId: 0, name: '电子工卡', type: 'M', icon: 'Tickets',       path: '/mro/workcard',         component: '',                    permission: '',                  sort: 9, status: 1 },
   { id: 101, parentId: 100, name: '工卡列表', type: 'C', icon: 'List',        path: '/mro/workcard',         component: 'mro/workcard/WorkcardList',permission: 'workcard:monitor',sort: 1, status: 1 },
   { id: 102, parentId: 100, name: '待检工卡', type: 'C', icon: 'Document',    path: '/mro/workcard/quality', component: 'mro/workcard/QualityPending', permission: 'quality:list', sort: 2, status: 1 },

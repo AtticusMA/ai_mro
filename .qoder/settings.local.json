@@ -396,7 +396,26 @@
       "Bash(cd D:/ai_code/ui && head -30 specs/mro/005-digital-twin-hangar.spec.md && echo \"---\" && head -30 specs/mro/006-tool-material-management.spec.md && echo \"---\" && head -30 specs/mro/008-paperless-workcard.spec.md && echo \"---\" && head -30 specs/mro/009-personnel-qualification.spec.md)",
       "Bash(cd D:/ai_code/ui && tail -15 specs/mro/005-digital-twin-hangar.spec.md && echo \"---\" && tail -15 specs/mro/006-tool-material-management.spec.md && echo \"---\" && tail -15 specs/mro/008-paperless-workcard.spec.md && echo \"---\" && tail -15 specs/mro/009-personnel-qualification.spec.md)",
       "Bash(cd D:/ai_code/ui && grep -rln \"pages/mro\\\\|pages\\\\\\\\\\\\\\\\mro\" frontend/src specs/ 2>/dev/null)",
-      "Bash(npm run:*)"
+      "Bash(npm run:*)",
+      "Bash(cd D:/ai_code/ui/frontend && cat .env 2>/dev/null; echo \"---\"; cat .env.development 2>/dev/null)",
+      "Bash(cd D:/ai_code/ui/frontend && npx vite build 2>&1 | tail -30)",
+      "Bash(cd D:/ai_code/ui/frontend && npx vite build --config vite.config.js 2>&1 | tail -30)",
+      "Bash(cd D:/ai_code/ui/frontend && cat node_modules/vite-plugin-mock/package.json 2>/dev/null | grep -E \"\\\\\"version\\\\\"|\\\\\"main\\\\\"\")",
+      "Bash(cd D:/ai_code/ui/frontend && cat package.json | grep -i \"vite-plugin-mock\")",
+      "Bash(cd D:/ai_code/ui/frontend && grep '\"vite\"' package.json)",
+      "Bash(cd D:/ai_code/ui/frontend && grep -n \"viteMockServe\\\\|mockPath\\\\|enable\\\\|logger\" node_modules/vite-plugin-mock/dist/index.mjs | head -10)",
+      "Bash(cd D:/ai_code/ui/frontend && grep -n \"enable\\\\|viteMockServe\\\\|function viteMockServe\\\\|export\" node_modules/vite-plugin-mock/dist/index.mjs | head -20)",
+      "Bash(cd D:/ai_code/ui/frontend && npx vite --port 5174 2>&1 &\nsleep 5 && curl -s http://localhost:5174/ | head -30)",
+      "Bash(curl:*)",
+      "Bash(curl -s http://localhost:5174/api/training/scenarios?page=1&pageSize=10)",
+      "Bash(curl -s http://localhost:5174/api/training/sessions?page=1&pageSize=10)",
+      "Bash(cat > /tmp/test_training.py << 'EOF'\nfrom playwright.sync_api import sync_playwright\n\nconsole_messages = []\n\nwith sync_playwright\\(\\) as p:\n    browser = p.chromium.launch\\(headless=True\\)\n    page = browser.new_page\\(\\)\n    \n    # Capture console messages\n    page.on\\(\"console\", lambda msg: console_messages.append\\(f\"[{msg.type}] {msg.text}\"\\)\\)\n    page.on\\(\"pageerror\", lambda err: console_messages.append\\(f\"[PAGE_ERROR] {err}\"\\)\\)\n    \n    # First login\n    page.goto\\('http://localhost:5174/login'\\)\n    page.wait_for_load_state\\('networkidle'\\)\n    page.fill\\('input[type=\"text\"], input[placeholder*=\"用户\"]', 'admin'\\)\n    page.fill\\('input[type=\"password\"]', 'admin123'\\)\n    page.click\\('button[type=\"submit\"], button:has-text\\(\"登录\"\\)'\\)\n    page.wait_for_load_state\\('networkidle'\\)\n    page.wait_for_timeout\\(2000\\)\n    \n    print\\(f\"After login URL: {page.url}\"\\)\n    \n    # Navigate to training page\n    page.goto\\('http://localhost:5174/mro/training'\\)\n    page.wait_for_timeout\\(3000\\)\n    \n    print\\(f\"Training page URL: {page.url}\"\\)\n    page.screenshot\\(path='/tmp/training_page.png', full_page=True\\)\n    \n    # Print console messages\n    print\\(\"\\\\n=== Console Messages ===\"\\)\n    for msg in console_messages:\n        if 'error' in msg.lower\\(\\) or 'PAGE_ERROR' in msg:\n            print\\(msg\\)\n    \n    print\\(\"\\\\n=== All Console ===\"\\)\n    for msg in console_messages:\n        print\\(msg\\)\n    \n    browser.close\\(\\)\nEOF\npython /tmp/test_training.py)",
+      "Bash(playwright install chromium 2>&1)",
+      "Bash(python /tmp/test_training.py 2>&1)",
+      "Bash(curl -s \"http://localhost:5174/src/pages/training/TrainingOverview.vue\" 2>&1 | grep -i \"error\\\\|fail\\\\|cannot\" | head -5)",
+      "Bash(cat /d/ai_code/ui/specs/mro/007-vr-ar-training.spec.md | head -50)",
+      "Bash(cat /d/ai_code/ui/specs/mro/008-paperless-workcard.spec.md | head -50)",
+      "Bash(cat /d/ai_code/ui/specs/mro/001-health-monitoring.spec.md | head -50)"
     ]
   }
 }

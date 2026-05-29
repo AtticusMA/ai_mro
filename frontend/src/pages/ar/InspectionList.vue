@@ -29,9 +29,14 @@
       <template #header>
         <div class="card-header">
           <span class="title">巡检任务</span>
-          <el-button type="primary" @click="handleCreate">
-            <el-icon><Plus /></el-icon>创建任务
-          </el-button>
+          <div>
+            <el-badge :value="anomalyCount" :hidden="anomalyCount === 0">
+              <el-button @click="showAnomalyPanel = true">实时异常</el-button>
+            </el-badge>
+            <el-button type="primary" @click="handleCreate" style="margin-left: 12px">
+              <el-icon><Plus /></el-icon>创建任务
+            </el-button>
+          </div>
         </div>
       </template>
 
@@ -106,11 +111,24 @@
         <el-table-column prop="snapshot_url" label="截图" min-width="120" show-overflow-tooltip />
       </el-table>
     </el-dialog>
+
+    <!-- 实时异常监控面板 -->
+    <el-drawer v-model="showAnomalyPanel" title="实时异常监控" size="360px" :with-header="true">
+      <div v-if="anomalyList.length === 0" class="empty-anomaly">暂无异常</div>
+      <div v-for="item in anomalyList" :key="item.id" class="anomaly-item">
+        <div class="anomaly-header">
+          <el-tag type="danger" size="small">{{ item.type }}</el-tag>
+          <span class="anomaly-confidence">置信度 {{ (item.confidence * 100).toFixed(0) }}%</span>
+        </div>
+        <div class="anomaly-desc">{{ item.description }}</div>
+        <div class="anomaly-time">{{ item.detected_at }}</div>
+      </div>
+    </el-drawer>
   </div>
 </template>
 
 <script setup>
-import { ref, reactive, onMounted } from 'vue'
+import { ref, reactive, onMounted, computed } from 'vue'
 import { ElMessage } from 'element-plus'
 import { Search, Refresh, Plus } from '@element-plus/icons-vue'
 import Pagination from '@/components/Pagination.vue'
@@ -131,6 +149,14 @@ const formRules = {
 
 const anomalyVisible = ref(false)
 const anomalies = ref([])
+
+const showAnomalyPanel = ref(false)
+const anomalyList = ref([
+  { id: 1, type: '盖板未闭合', confidence: 0.95, description: '3号发动机进气口盖板检测到未完全闭合', detected_at: '2026-05-29 08:15:32' },
+  { id: 2, type: '安全销缺失', confidence: 0.88, description: '前起落架安全销未检测到在位', detected_at: '2026-05-29 08:12:10' },
+  { id: 3, type: '液压渗漏', confidence: 0.72, description: '右主起落架液压管路检测到可疑渗漏痕迹', detected_at: '2026-05-29 08:08:45' }
+])
+const anomalyCount = computed(() => anomalyList.value.length)
 
 const statusType = (s) => ({ pending: 'info', in_progress: 'warning', completed: 'success' })[s] || ''
 const statusLabel = (s) => ({ pending: '待执行', in_progress: '进行中', completed: '已完成' })[s] || s
@@ -197,4 +223,10 @@ onMounted(() => { fetchData() })
 .card-header .title {
   font-weight: 600;
 }
+.anomaly-item { padding: 12px; border-bottom: 1px solid #ebeef5; }
+.anomaly-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+.anomaly-confidence { font-size: 12px; color: #909399; }
+.anomaly-desc { font-size: 13px; color: #606266; margin-bottom: 4px; }
+.anomaly-time { font-size: 12px; color: #909399; }
+.empty-anomaly { text-align: center; color: #909399; padding: 40px 0; }
 </style>

@@ -10,6 +10,9 @@
 
     <!-- 右侧：用户菜单 -->
     <div class="navbar-right">
+      <!-- 通知铃铛 -->
+      <NotificationBell />
+
       <!-- 用户信息 -->
       <div class="user-info">
         <el-avatar :src="userAvatar" :size="40" />
@@ -51,13 +54,24 @@
 </template>
 
 <script setup>
-import { computed } from 'vue'
+import { computed, onMounted, onBeforeUnmount } from 'vue'
 import { useRouter } from 'vue-router'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { useAuthStore } from '@/store/modules/auth'
+import { useNotificationStore } from '@/store/modules/notification'
+import NotificationBell from '@/components/NotificationBell.vue'
 
 const router = useRouter()
 const authStore = useAuthStore()
+const notificationStore = useNotificationStore()
+
+onMounted(() => {
+  notificationStore.startPolling()
+})
+
+onBeforeUnmount(() => {
+  notificationStore.stopPolling()
+})
 
 // 计算属性
 const userAvatar = computed(() => authStore.user?.avatar || 'https://via.placeholder.com/40')

@@ -10,12 +10,25 @@
               <el-input v-model="queryForm.fault_code" placeholder="如 ENG-001" />
             </el-form-item>
             <el-form-item label="故障描述">
-              <el-input
-                v-model="queryForm.description"
-                type="textarea"
-                :rows="4"
-                placeholder="请描述故障现象，如：发动机运行中振动值持续升高..."
-              />
+              <div style="position: relative; width: 100%">
+                <el-input
+                  v-model="queryForm.description"
+                  type="textarea"
+                  :rows="4"
+                  placeholder="请描述故障现象，如：发动机运行中振动值持续升高..."
+                />
+                <el-button
+                  class="voice-btn"
+                  :type="recording ? 'danger' : 'default'"
+                  circle
+                  size="small"
+                  @click="handleVoiceInput"
+                  :loading="recording"
+                >
+                  <el-icon v-if="!recording"><Microphone /></el-icon>
+                </el-button>
+              </div>
+              <div v-if="recording" class="voice-tip">正在录音，请描述故障现象...</div>
             </el-form-item>
             <el-form-item label="机型">
               <el-select v-model="queryForm.aircraft_type" placeholder="请选择">
@@ -76,10 +89,22 @@
 <script setup>
 import { ref, reactive } from 'vue'
 import { ElMessage } from 'element-plus'
+import { Microphone } from '@element-plus/icons-vue'
 import { submitQuery, getQueryResult } from '@/api/tshoot'
 
 const querying = ref(false)
 const result = ref(null)
+const recording = ref(false)
+
+const handleVoiceInput = () => {
+  if (recording.value) return
+  recording.value = true
+  setTimeout(() => {
+    queryForm.description = '发动机启动时发出异常高频噪音，N2转速波动范围超出正常值，伴随轻微振动增大'
+    recording.value = false
+    ElMessage.success('语音识别完成')
+  }, 2000)
+}
 
 const queryForm = reactive({
   fault_code: '',
@@ -140,5 +165,21 @@ const handleQuery = async () => {
   display: flex;
   gap: 12px;
   margin-top: 16px;
+}
+.voice-btn {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  z-index: 1;
+}
+.voice-tip {
+  font-size: 12px;
+  color: #f56c6c;
+  margin-top: 4px;
+  animation: blink 1s infinite;
+}
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
 }
 </style>

@@ -183,5 +183,18 @@ export default [
         data: { id, playback_url: `/mock/archives/video_${id}.mp4`, duration_seconds: 1200 }
       }
     }
+  },
+  {
+    url: '/api/ar/experts',
+    method: 'get',
+    response: () => ({
+      code: 200,
+      data: [
+        { id: 1, name: '赵总工', specialty: '发动机', available: true },
+        { id: 2, name: '孙高工', specialty: '液压系统', available: true },
+        { id: 3, name: '周技术经理', specialty: '起落架', available: false },
+        { id: 4, name: '吴工程师', specialty: '电气系统', available: true }
+      ]
+    })
   }
 ]

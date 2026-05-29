@@ -69,6 +69,33 @@
 
       <Pagination :total="total" v-model:page="queryParams.page" v-model:page-size="queryParams.pageSize" @change="fetchData" />
     </el-card>
+
+    <!-- 呼叫专家对话框 -->
+    <el-dialog v-model="showCallDialog" title="呼叫专家" width="480px" :close-on-click-modal="false">
+      <el-form :model="callForm" label-width="80px">
+        <el-form-item label="协作主题">
+          <el-input v-model="callForm.subject" placeholder="请输入协作主题" />
+        </el-form-item>
+        <el-form-item label="选择专家">
+          <el-select v-model="callForm.expert_id" placeholder="请选择专家" style="width: 100%">
+            <el-option v-for="exp in expertOptions" :key="exp.id" :label="`${exp.name}（${exp.specialty}）`" :value="exp.id" :disabled="!exp.available">
+              <span>{{ exp.name }}</span>
+              <span style="float: right; color: #909399; font-size: 12px">{{ exp.specialty }} {{ exp.available ? '' : '(忙碌)' }}</span>
+            </el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="紧急程度">
+          <el-radio-group v-model="callForm.urgency">
+            <el-radio value="normal">普通</el-radio>
+            <el-radio value="urgent">紧急</el-radio>
+          </el-radio-group>
+        </el-form-item>
+      </el-form>
+      <template #footer>
+        <el-button @click="showCallDialog = false">取消</el-button>
+        <el-button type="primary" @click="handleCallSubmit">发起呼叫</el-button>
+      </template>
+    </el-dialog>
   </div>
 </template>
 
@@ -77,12 +104,16 @@ import { ref, reactive, onMounted } from 'vue'
 import { ElMessage } from 'element-plus'
 import { Search, Refresh, Phone } from '@element-plus/icons-vue'
 import Pagination from '@/components/Pagination.vue'
-import { getSessionList, createSession, joinSession, endSession } from '@/api/ar'
+import { getSessionList, createSession, joinSession, endSession, getExperts } from '@/api/ar'
 
 const loading = ref(false)
 const tableData = ref([])
 const total = ref(0)
 const queryParams = reactive({ page: 1, pageSize: 10, status: '' })
+
+const showCallDialog = ref(false)
+const callForm = reactive({ subject: '', expert_id: null, urgency: 'normal' })
+const expertOptions = ref([])
 
 const sessionStatusType = (s) => ({ waiting: 'warning', active: 'success', ended: 'info' })[s] || ''
 const sessionStatusLabel = (s) => ({ waiting: '等待接入', active: '进行中', ended: '已结束' })[s] || s
@@ -110,9 +141,29 @@ const handleSearch = () => { queryParams.page = 1; fetchData() }
 const handleReset = () => { queryParams.status = ''; handleSearch() }
 
 const handleCreate = async () => {
-  const res = await createSession({})
+  const res = await getExperts()
+  if (res.code === 200) {
+    expertOptions.value = res.data
+  }
+  callForm.subject = ''
+  callForm.expert_id = null
+  callForm.urgency = 'normal'
+  showCallDialog.value = true
+}
+
+const handleCallSubmit = async () => {
+  if (!callForm.subject) {
+    ElMessage.warning('请输入协作主题')
+    return
+  }
+  if (!callForm.expert_id) {
+    ElMessage.warning('请选择专家')
+    return
+  }
+  const res = await createSession(callForm)
   if (res.code === 200) {
     ElMessage.success('协作会话已创建，等待专家接入')
+    showCallDialog.value = false
     fetchData()
   }
 }

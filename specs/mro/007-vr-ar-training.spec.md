@@ -4,9 +4,9 @@ title: VR/AR沉浸式培训
 domain: mro
 status: approved
 owner: '@product'
-version: 1.0.0
+version: 1.1.0
 created: 2026-05-25
-updated: 2026-05-26
+updated: 2026-05-29
 charter: CHARTER.md
 supersedes: []
 depends-on: []
@@ -346,3 +346,4 @@ public record IndividualReportDTO(
 |------|------|------|
 | 0.1.0 | 2026-05-25 | 初稿 |
 | 1.0.0 | 2026-05-26 | 补充后端实现约束（JSON Schema / Dubbo 接口 / 错误码） |
+| 1.1.0 | 2026-05-29 | 补充前端管理后台页面需求（P5里程碑）：场景管理、学员列表/档案、培训任务、AI评估详情 5 个页面，含 echarts 可视化（雷达图/折线图/柱状图） |

@@ -96,3 +96,10 @@ export const getArchiveList = (params) => {
 export const getArchivePlayback = (id) => {
   return request.get(`/api/ar/archives/${id}/playback`)
 }
+
+/**
+ * 获取专家列表
+ */
+export const getExperts = () => {
+  return request.get('/api/ar/experts')
+}

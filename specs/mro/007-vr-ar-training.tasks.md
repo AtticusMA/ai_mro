@@ -2,7 +2,7 @@
 id: MRO-007
 plan: mro/007-vr-ar-training.plan.md
 created: 2026-05-25
-updated: 2026-05-25
+updated: 2026-05-29
 ---
 
 # Tasks: VR/AR沉浸式培训
@@ -23,12 +23,13 @@ updated: 2026-05-25
 | T-012 | VR 场景制作 — 航线绕机检查 | @dev | T-006, T-007 | 场景可完整执行 + 帧率 ≥ 72fps | todo |
 | T-013 | VR 场景制作 — 发动机拆装 | @dev | T-006, T-007 | 场景可完整执行 + 物理反馈正常 | todo |
 | T-014 | VR 场景制作 — 高危突发故障演练 | @dev | T-006, T-007 | 场景可反复进入 + 初始条件一致 | todo |
-| T-015 | 场景管理前端（列表/创建/编辑/发布 + Three.js 预览） | @dev | T-001 | 页面功能验收 + Code Review | todo |
-| T-016 | 学员档案前端（能力雷达图 + 技能趋势图） | @dev | T-002, T-011 | 页面功能验收 + Code Review | todo |
-| T-017 | 考核报告前端（个人报告 + 整体统计概览） | @dev | T-011 | 页面功能验收 + Code Review | todo |
-| T-018 | 培训任务分配前端（学员+场景匹配 + 会话列表） | @dev | T-003 | 页面功能验收 + Code Review | todo |
+| T-015 | 场景管理前端（列表/创建/编辑/发布/删除） | @dev | T-001 | 页面功能验收 + npm run build 通过 | doing |
+| T-016 | 学员档案前端（列表 + 档案详情 + 能力雷达图 + 技能趋势图） | @dev | T-002, T-011 | 页面功能验收 + npm run build 通过 | doing |
+| T-017 | 考核报告前端（AI 评估详情 + 多维度得分柱状图） | @dev | T-011 | 页面功能验收 + npm run build 通过 | doing |
+| T-018 | 培训任务分配前端（学员+场景匹配 + 会话列表 + 创建任务） | @dev | T-003 | 页面功能验收 + npm run build 通过 | doing |
 | T-019 | Photon 多人协同集成（房间管理 + 状态同步） | @dev | T-005, T-006 | 10 人同时在线测试通过 + Code Review | todo |
 | T-020 | AR 模式适配（HoloLens SLAM + 虚实注册） | @dev | T-005, T-006 | AR 注册精度 ≤ 5mm 测试通过 | todo |
 | T-021 | E2E 测试（完整培训流程 + 评估报告生成） | @dev | T-012, T-010, T-015 | E2E 测试全部通过 + 验收报告 | todo |
+| T-022 | 前端路由注册 + 侧边栏菜单更新 | @dev | T-015~T-018 | 菜单导航正确 + 面包屑正确 | doing |
 
 > 状态枚举：todo / doing / review / done / blocked

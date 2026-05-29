@@ -55,13 +55,47 @@
         <el-button type="primary" @click="handleSubmitCreate">确定</el-button>
       </template>
     </el-dialog>
+
+    <!-- 上传文档 -->
+    <el-dialog v-model="showUploadDialog" title="上传文档" width="500px">
+      <el-form label-width="80px">
+        <el-form-item label="文档类型">
+          <el-select v-model="uploadDocType" placeholder="请选择文档类型" style="width: 100%">
+            <el-option label="维修手册" value="manual" />
+            <el-option label="服务通告" value="bulletin" />
+            <el-option label="维修经验" value="experience" />
+            <el-option label="故障案例" value="case" />
+          </el-select>
+        </el-form-item>
+        <el-form-item label="选择文件">
+          <el-upload
+            drag
+            action="#"
+            :auto-upload="false"
+            :on-change="handleFileChange"
+            :file-list="uploadFileList"
+            accept=".pdf,.doc,.docx,.txt"
+          >
+            <el-icon class="el-icon--upload"><UploadFilled /></el-icon>
+            <div class="el-upload__text">拖拽文件到此处，或<em>点击上传</em></div>
+            <template #tip>
+              <div class="el-upload__tip">支持 PDF/DOC/DOCX/TXT 格式</div>
+            </template>
+          </el-upload>
+        </el-form-item>
+      </el-form>
+      <template #footer>
+        <el-button @click="showUploadDialog = false">取消</el-button>
+        <el-button type="primary" @click="handleUploadSubmit">上传</el-button>
+      </template>
+    </el-dialog>
   </div>
 </template>
 
 <script setup>
 import { ref, reactive, onMounted } from 'vue'
 import { ElMessage } from 'element-plus'
-import { Plus } from '@element-plus/icons-vue'
+import { Plus, UploadFilled } from '@element-plus/icons-vue'
 import { getKnowledgeBases, createKnowledgeBase } from '@/api/tshoot'
 
 const loading = ref(false)
@@ -104,7 +138,32 @@ const handleSubmitCreate = async () => {
 }
 
 const handleUpload = (row) => {
-  ElMessage.info(`上传文档到: ${row.name}`)
+  uploadKbId.value = row.id
+  showUploadDialog.value = true
+}
+
+const showUploadDialog = ref(false)
+const uploadKbId = ref(null)
+const uploadDocType = ref('')
+const uploadFileList = ref([])
+
+const handleFileChange = (file) => {
+  uploadFileList.value = [file]
+}
+
+const handleUploadSubmit = () => {
+  if (!uploadDocType.value) {
+    ElMessage.warning('请选择文档类型')
+    return
+  }
+  if (uploadFileList.value.length === 0) {
+    ElMessage.warning('请选择文件')
+    return
+  }
+  ElMessage.success('文档上传成功，正在处理向量化...')
+  showUploadDialog.value = false
+  uploadDocType.value = ''
+  uploadFileList.value = []
 }
 
 onMounted(() => { fetchData() })

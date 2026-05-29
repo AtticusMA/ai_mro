@@ -47,6 +47,27 @@ export const protectedRoutes = [
         }
       },
       {
+        path: 'notifications',
+        name: 'NotificationCenter',
+        component: () => import('@/pages/NotificationCenter.vue'),
+        meta: {
+          title: '消息通知',
+          requiresAuth: true,
+          breadcrumb: '消息通知'
+        }
+      },
+      {
+        path: 'analytics',
+        name: 'AnalyticsDashboard',
+        component: () => import('@/pages/AnalyticsDashboard.vue'),
+        meta: {
+          title: '数据分析',
+          requiresAuth: true,
+          permissions: ['dashboard:view'],
+          breadcrumb: '数据分析'
+        }
+      },
+      {
         path: 'system',
         name: 'System',
         component: { render: () => h(resolveComponent('router-view')) },
@@ -431,6 +452,36 @@ export const protectedRoutes = [
             name: 'TrainingOverview',
             component: () => import('@/pages/training/TrainingOverview.vue'),
             meta: { title: '培训概览', requiresAuth: true, permissions: ['train:assign'], breadcrumb: '培训概览' }
+          },
+          {
+            path: 'scenarios',
+            name: 'ScenarioManagement',
+            component: () => import('@/pages/training/ScenarioManagement.vue'),
+            meta: { title: '场景管理', requiresAuth: true, permissions: ['train:assign'], breadcrumb: '场景管理' }
+          },
+          {
+            path: 'trainees',
+            name: 'TraineeList',
+            component: () => import('@/pages/training/TraineeList.vue'),
+            meta: { title: '学员列表', requiresAuth: true, permissions: ['train:assign'], breadcrumb: '学员列表' }
+          },
+          {
+            path: 'trainees/:id',
+            name: 'TraineeProfile',
+            component: () => import('@/pages/training/TraineeProfile.vue'),
+            meta: { title: '学员档案', requiresAuth: true, permissions: ['train:assess'], breadcrumb: '学员档案' }
+          },
+          {
+            path: 'sessions',
+            name: 'SessionManagement',
+            component: () => import('@/pages/training/SessionManagement.vue'),
+            meta: { title: '培训任务', requiresAuth: true, permissions: ['train:assign'], breadcrumb: '培训任务' }
+          },
+          {
+            path: 'assessments/:sessionId',
+            name: 'AssessmentDetail',
+            component: () => import('@/pages/training/AssessmentDetail.vue'),
+            meta: { title: 'AI评估', requiresAuth: true, permissions: ['train:assess'], breadcrumb: 'AI评估' }
           }
         ]
       },

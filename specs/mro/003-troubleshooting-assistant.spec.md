@@ -4,9 +4,9 @@ title: 智能排故助手
 domain: mro
 status: approved
 owner: '@product'
-version: 1.0.0
+version: 1.1.0
 created: 2026-05-25
-updated: 2026-05-26
+updated: 2026-05-29
 charter: CHARTER.md
 supersedes: []
 depends-on: []
@@ -313,3 +313,4 @@ public record RepairHistoryDTO(
 |------|------|------|
 | 0.1.0 | 2026-05-25 | 初稿 |
 | 1.0.0 | 2026-05-26 | 补充后端实现约束（JSON Schema / Dubbo 接口 / 错误码） |
+| 1.1.0 | 2026-05-29 | 前端增强：维修统计面板（echarts）、语音输入按钮、文档上传弹窗 |

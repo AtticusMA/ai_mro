@@ -1,5 +1,26 @@
 [
   {
+    "domain": "analytics",
+    "endpoints": [
+      {
+        "url": "/api/analytics/overview",
+        "method": "GET"
+      },
+      {
+        "url": "/api/analytics/trends",
+        "method": "GET"
+      },
+      {
+        "url": "/api/analytics/module-kpis",
+        "method": "GET"
+      },
+      {
+        "url": "/api/analytics/maintenance-distribution",
+        "method": "GET"
+      }
+    ]
+  },
+  {
     "domain": "ar",
     "endpoints": [
       {
@@ -48,6 +69,10 @@
       },
       {
         "url": "/api/ar/archives/:id/playback",
+        "method": "GET"
+      },
+      {
+        "url": "/api/ar/experts",
         "method": "GET"
       }
     ]
@@ -456,6 +481,27 @@
     ]
   },
   {
+    "domain": "notification",
+    "endpoints": [
+      {
+        "url": "/api/notifications",
+        "method": "GET"
+      },
+      {
+        "url": "/api/notifications/unread-count",
+        "method": "GET"
+      },
+      {
+        "url": "/api/notifications/:id/read",
+        "method": "PUT"
+      },
+      {
+        "url": "/api/notifications/read-all",
+        "method": "PUT"
+      }
+    ]
+  },
+  {
     "domain": "operationLog",
     "endpoints": [
       {
@@ -737,6 +783,18 @@
       {
         "url": "/api/training/scenarios",
         "method": "POST"
+      },
+      {
+        "url": "/api/training/scenarios/:id",
+        "method": "PUT"
+      },
+      {
+        "url": "/api/training/scenarios/:id/publish",
+        "method": "PUT"
+      },
+      {
+        "url": "/api/training/scenarios/:id",
+        "method": "DELETE"
       },
       {
         "url": "/api/training/trainees",

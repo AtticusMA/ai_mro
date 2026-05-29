@@ -4,7 +4,7 @@ spec: mro/007-vr-ar-training.spec.md
 status: approved
 owner: '@arch'
 created: 2026-05-25
-updated: 2026-05-25
+updated: 2026-05-29
 ---
 
 # Plan: VR/AR沉浸式培训
@@ -108,3 +108,31 @@ graph TB
 ## 6. 关联 ADR
 
 - ADR-005: MRO 技术栈扩展 — Unity/Three.js/WebRTC 选型决策
+
+## 7. P5 前端管理后台实施方案
+
+### 7.1 页面清单
+
+| 页面 | 路由 | 功能 | 依赖 API |
+|------|------|------|----------|
+| ScenarioManagement.vue | /mro/training/scenarios | 场景 CRUD + 发布状态切换 | GET/POST/PUT/DELETE scenarios, PUT publish |
+| TraineeList.vue | /mro/training/trainees | 学员列表（筛选技能等级） | GET trainees |
+| TraineeProfile.vue | /mro/training/trainees/:id | 学员档案（雷达图+趋势+培训记录） | GET profile, GET individual report, GET sessions |
+| SessionManagement.vue | /mro/training/sessions | 培训任务分配+进度查看 | GET/POST sessions, GET scenarios, GET trainees |
+| AssessmentDetail.vue | /mro/training/assessments/:sessionId | AI 评估详情（多维得分柱状图） | GET assessments/{sessionId} |
+
+### 7.2 技术方案
+
+- **框架**: Vue 3 Composition API (`<script setup>`) + Element Plus 2
+- **可视化**: echarts 5 按需引入（RadarChart, LineChart, BarChart）
+- **路由**: Vue Router 4 嵌套路由，父级 `router-view` 渲染
+- **数据层**: Mock-first（vite-plugin-mock），API 层使用 axios 封装
+- **权限**: `permissions: ['train:assign']` / `['train:assess']`
+
+### 7.3 实施步骤
+
+1. Mock 层补充（PUT/DELETE 场景端点）
+2. API 层补充（updateScenario, deleteScenario, publishScenario）
+3. 5 个页面开发（按依赖顺序：Scenario → Trainee → Session → Assessment）
+4. 路由注册 + 侧边栏菜单更新
+5. 构建验证 + 功能测试
