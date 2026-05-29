@@ -1,0 +1,13 @@
+D:\ai_code\ui\mro-backend\auth-service\src\main\java\com\mro\auth\AuthApplication.java
+D:\ai_code\ui\mro-backend\auth-service\src\main\java\com\mro\auth\config\JwtProperties.java
+D:\ai_code\ui\mro-backend\auth-service\src\main\java\com\mro\auth\config\WebConfig.java
+D:\ai_code\ui\mro-backend\auth-service\src\main\java\com\mro\auth\controller\AuthController.java
+D:\ai_code\ui\mro-backend\auth-service\src\main\java\com\mro\auth\dto\ChangePasswordRequest.java
+D:\ai_code\ui\mro-backend\auth-service\src\main\java\com\mro\auth\dto\LoginRequest.java
+D:\ai_code\ui\mro-backend\auth-service\src\main\java\com\mro\auth\dto\LoginResponse.java
+D:\ai_code\ui\mro-backend\auth-service\src\main\java\com\mro\auth\dto\RefreshTokenRequest.java
+D:\ai_code\ui\mro-backend\auth-service\src\main\java\com\mro\auth\dubbo\AuthDubboServiceImpl.java
+D:\ai_code\ui\mro-backend\auth-service\src\main\java\com\mro\auth\entity\SysUser.java
+D:\ai_code\ui\mro-backend\auth-service\src\main\java\com\mro\auth\mapper\SysUserMapper.java
+D:\ai_code\ui\mro-backend\auth-service\src\main\java\com\mro\auth\service\AuthService.java
+D:\ai_code\ui\mro-backend\auth-service\src\main\java\com\mro\auth\util\JwtUtil.java

@@ -1,0 +1,55 @@
+server:
+  port: 8081
+
+spring:
+  application:
+    name: manage-web
+  threads:
+    virtual:
+      enabled: true
+  cloud:
+    nacos:
+      discovery:
+        server-addr: ${NACOS_ADDR:127.0.0.1:8848}
+  data:
+    redis:
+      host: ${REDIS_HOST:127.0.0.1}
+      port: ${REDIS_PORT:6379}
+      password: ${REDIS_PASSWORD:}
+      database: 0
+
+dubbo:
+  application:
+    name: manage-web
+  protocol:
+    name: dubbo
+    port: -1   # manage-web 只作消费方，不暴露 Dubbo 端口
+  registry:
+    address: nacos://${NACOS_ADDR:127.0.0.1:8848}
+  consumer:
+    timeout: 5000
+    retries: 0
+
+security:
+  sm2:
+    private-key: ${SM2_PRIVATE_KEY:}
+    public-key: ${SM2_PUBLIC_KEY:}
+    encryption:
+      enabled: true
+      timestamp-tolerance: 300  # seconds, ±5 minutes
+
+minio:
+  endpoint: ${MINIO_ENDPOINT:http://localhost:9000}
+  access-key: ${MINIO_ACCESS_KEY:minioadmin}
+  secret-key: ${MINIO_SECRET_KEY:minioadmin}
+  bucket-name: ${MINIO_BUCKET:mro-manual}
+
+logging:
+  level:
+    com.mro: DEBUG
+
+dingtalk:
+  alert:
+    enabled: ${DINGTALK_ALERT_ENABLED:false}
+    webhook: ${DINGTALK_WEBHOOK:}
+    secret: ${DINGTALK_SECRET:}

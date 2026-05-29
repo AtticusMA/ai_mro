@@ -1,0 +1,18 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(node:*)",
+      "Bash(ls -la D:/ai_code/ui/ai/ 2>/dev/null || ls -la D:/ai_code/ui/frontend/ai/ 2>/dev/null || echo \"NOT_FOUND_AT_EITHER\")",
+      "Bash(ls -la D:/ai_code/ui/frontend/ai/ 2>/dev/null && echo \"---\" && ls D:/ai_code/ui/frontend/)",
+      "Bash(ls D:/ai_code/ui/ | grep -i \"需求\\\\|项目\" 2>/dev/null; echo \"---\"; ls D:/ai_code/ui/)",
+      "Bash(ls D:/ai_code/ui/frontend/src/pages/system/ && echo \"---mock---\" && ls D:/ai_code/ui/frontend/src/mock/api/ && echo \"---api---\" && ls D:/ai_code/ui/frontend/src/api/)",
+      "Bash(cat D:/ai_code/ui/frontend/.env.development && echo \"---\" && cat D:/ai_code/ui/frontend/.env.production 2>/dev/null)",
+      "Bash(ls D:/ai_code/ui/frontend/src/mock/ 2>/dev/null; echo \"---\"; ls D:/ai_code/ui/frontend/src/mock/api/)",
+      "Bash(ls \"D:/ai_code/ui/frontend/src/mock/modules/\" && echo \"---data---\" && ls \"D:/ai_code/ui/frontend/src/mock/data/\")",
+      "Bash(ls src/mock/ && echo \"---modules---\" && ls src/mock/modules/ && echo \"---data---\" && ls src/mock/data/)",
+      "Bash(grep -rIn --exclude-dir=node_modules --exclude-dir=dist -E \"mock/\\(index|modules|data|utils\\)|@/mock['\\\\\"]|from ['\\\\\"]\\\\.\\\\./utils['\\\\\"]\" src/ 2>/dev/null | head -50)",
+      "Bash(grep:*)",
+      "Bash(rm -f src/mock/index.js src/mock/utils.js && rm -rf src/mock/modules src/mock/data && ls src/mock/)"
+    ]
+  }
+}

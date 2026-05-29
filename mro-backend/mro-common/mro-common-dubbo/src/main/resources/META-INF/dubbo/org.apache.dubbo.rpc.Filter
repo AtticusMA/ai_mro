@@ -1,0 +1,1 @@
+dubboLogFilter=com.mro.common.dubbo.filter.DubboLogFilter

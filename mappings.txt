@@ -1,0 +1,5 @@
+D:/ai_code/ui/mro-backend/manage-web/src/main/java/com/mro/web/module/workcard/controller/WorkcardController.java:17:@RequestMapping("/api/workcards")
+D:/ai_code/ui/mro-backend/manage-web/src/main/java/com/mro/web/module/system/controller/PersonnelLicenseController.java:17:@RequestMapping("/api/personnel-licenses")
+D:/ai_code/ui/mro-backend/manage-web/src/main/java/com/mro/web/module/dtwin/controller/DtwinController.java:18:@RequestMapping("/api/dtwin")
+D:/ai_code/ui/mro-backend/manage-web/src/main/java/com/mro/web/module/tool/controller/MaterialRequestController.java:17:@RequestMapping("/api")
+D:/ai_code/ui/mro-backend/manage-web/src/main/java/com/mro/web/module/health/controller/HealthController.java:19:@RequestMapping("/api/health")

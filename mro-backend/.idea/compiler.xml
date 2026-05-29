@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="aircraft-health-service" />
+        <module name="fault-diagnosis-service" />
+        <module name="maintenance-manual-service" />
+        <module name="system-service" />
+        <module name="mro-common-dubbo" />
+        <module name="mro-common-core" />
+        <module name="ar-maintenance-service" />
+        <module name="tooling-material-service" />
+        <module name="vr-ar-training-service" />
+        <module name="auth-service" />
+        <module name="manage-web" />
+        <module name="gateway-service" />
+        <module name="paperless-checkin-service" />
+        <module name="digital-twin-service" />
+      </profile>
+    </annotationProcessing>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="aircraft-health-service" options="--enable-preview" />
+      <module name="ar-maintenance-service" options="--enable-preview" />
+      <module name="auth-service" options="--enable-preview" />
+      <module name="digital-twin-service" options="--enable-preview" />
+      <module name="fault-diagnosis-service" options="--enable-preview" />
+      <module name="gateway-service" options="--enable-preview" />
+      <module name="maintenance-manual-service" options="--enable-preview" />
+      <module name="manage-web" options="--enable-preview" />
+      <module name="mro-common-core" options="--enable-preview" />
+      <module name="mro-common-dubbo" options="--enable-preview" />
+      <module name="paperless-checkin-service" options="--enable-preview" />
+      <module name="system-service" options="--enable-preview" />
+      <module name="tooling-material-service" options="--enable-preview" />
+      <module name="vr-ar-training-service" options="--enable-preview" />
+    </option>
+  </component>
+</project>

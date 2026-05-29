@@ -1,0 +1,16 @@
+2026-05-29 15:28:25.440 [background-preinit] INFO  org.hibernate.validator.internal.util.Version [] - HV000001: Hibernate Validator 8.0.1.Final
+2026-05-29 15:28:25.514 [main] INFO  com.mro.web.ManageWebApplication [] - Starting ManageWebApplication using Java 21.0.11 with PID 30468 (D:\ai_code\ui\mro-backend\manage-web\target\classes started by Administrator in D:\ai_code\ui\mro-backend)
+2026-05-29 15:28:25.515 [main] INFO  com.mro.web.ManageWebApplication [] - No active profile set, falling back to 1 default profile: "default"
+2026-05-29 15:28:26.116 [main] INFO  org.springframework.data.repository.config.RepositoryConfigurationDelegate [] - Multiple Spring Data modules found, entering strict repository configuration mode
+2026-05-29 15:28:26.118 [main] INFO  org.springframework.data.repository.config.RepositoryConfigurationDelegate [] - Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2026-05-29 15:28:26.137 [main] INFO  org.springframework.data.repository.config.RepositoryConfigurationDelegate [] - Finished Spring Data repository scanning in 10 ms. Found 0 Redis repository interfaces.
+2026-05-29 15:28:26.666 [main] INFO  org.springframework.boot.web.embedded.tomcat.TomcatWebServer [] - Tomcat initialized with port 8081 (http)
+2026-05-29 15:28:26.673 [main] INFO  org.apache.coyote.http11.Http11NioProtocol [] - Initializing ProtocolHandler ["http-nio-8081"]
+2026-05-29 15:28:26.675 [main] INFO  org.apache.catalina.core.StandardService [] - Starting service [Tomcat]
+2026-05-29 15:28:26.675 [main] INFO  org.apache.catalina.core.StandardEngine [] - Starting Servlet engine: [Apache Tomcat/10.1.20]
+2026-05-29 15:28:26.706 [main] INFO  org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/] [] - Initializing Spring embedded WebApplicationContext
+2026-05-29 15:28:26.706 [main] INFO  org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext [] - Root WebApplicationContext: initialization completed in 1169 ms
+2026-05-29 15:28:43.270 [main] INFO  org.apache.catalina.core.StandardService [] - Stopping service [Tomcat]
+2026-05-29 15:28:43.276 [main] INFO  org.springframework.boot.autoconfigure.logging.ConditionEvaluationReportLogger [] - 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.

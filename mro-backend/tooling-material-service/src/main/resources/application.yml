@@ -1,0 +1,56 @@
+server:
+  port: 8093
+
+spring:
+  application:
+    name: tooling-material-service
+  datasource:
+    url: jdbc:mysql://${DB_HOST:localhost}:${DB_PORT:3306}/mro_tool?useUnicode=true&characterEncoding=utf8&serverTimezone=UTC
+    username: ${DB_USER:root}
+    password: ${DB_PASSWORD:root}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  data:
+    redis:
+      host: ${REDIS_HOST:127.0.0.1}
+      port: ${REDIS_PORT:6379}
+      password: ${REDIS_PASSWORD:}
+      database: 6
+  cloud:
+    nacos:
+      discovery:
+        server-addr: ${NACOS_ADDR:127.0.0.1:8848}
+  threads:
+    virtual:
+      enabled: true
+
+dubbo:
+  application:
+    name: tooling-material-service
+  registry:
+    address: nacos://${NACOS_ADDR:127.0.0.1:8848}
+  protocol:
+    name: dubbo
+    port: 20891
+  consumer:
+    check: false
+
+mybatis-plus:
+  configuration:
+    map-underscore-to-camel-case: true
+  global-config:
+    db-config:
+      id-type: auto
+      logic-delete-field: deleted
+      logic-delete-value: 1
+      logic-not-delete-value: 0
+
+mqtt:
+  broker-url: ${MQTT_BROKER_URL:tcp://localhost:1883}
+  client-id: tool-service
+  username: ${MQTT_USERNAME:}
+  password: ${MQTT_PASSWORD:}
+  cabinet-topic: tool/cabinet/+/event
+
+logging:
+  level:
+    com.mro.tool: DEBUG

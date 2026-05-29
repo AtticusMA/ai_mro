@@ -1,0 +1,993 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>MRO OPS · AI工作辅助系统</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg-0:#070a10;
+    --bg-1:#0c1119;
+    --bg-2:#10161f;
+    --bg-3:#161d28;
+    --line:#1d2632;
+    --line-2:#283242;
+    --ink-0:#eef3fa;
+    --ink-1:#a8b3c4;
+    --ink-2:#697386;
+    --ink-3:#404a5c;
+    --amber:#ffb547;
+    --amber-soft:#5b3f12;
+    --cyan:#5fd9ff;
+    --cyan-soft:#0e3a48;
+    --green:#3ddc97;
+    --green-soft:#0e3b27;
+    --red:#ff5c6b;
+    --red-soft:#3d1218;
+    --violet:#9d8cff;
+    --grad-amber:linear-gradient(180deg,#ffb547 0%,#ff7a3d 100%);
+    --grad-panel:linear-gradient(180deg,#10161f 0%,#0c1119 100%);
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0;background:var(--bg-0);color:var(--ink-0);font-family:"Noto Sans SC","Chakra Petch",-apple-system,BlinkMacSystemFont,sans-serif;font-size:13px;line-height:1.45;-webkit-font-smoothing:antialiased}
+  body{
+    min-height:100vh;
+    background:
+      radial-gradient(1200px 600px at 80% -10%, rgba(255,181,71,.06), transparent 60%),
+      radial-gradient(1000px 500px at 0% 100%, rgba(95,217,255,.05), transparent 60%),
+      var(--bg-0);
+    background-attachment:fixed;
+  }
+  /* faint scanline texture */
+  body::before{
+    content:"";position:fixed;inset:0;pointer-events:none;z-index:1;
+    background-image:repeating-linear-gradient(0deg, rgba(255,255,255,.012) 0 1px, transparent 1px 3px);
+    mix-blend-mode:overlay;
+  }
+  ::selection{background:rgba(255,181,71,.35);color:#fff}
+  ::-webkit-scrollbar{width:8px;height:8px}
+  ::-webkit-scrollbar-track{background:transparent}
+  ::-webkit-scrollbar-thumb{background:#1d2632;border-radius:4px}
+  ::-webkit-scrollbar-thumb:hover{background:#283242}
+
+  .app{display:grid;grid-template-columns:236px 1fr;min-height:100vh;position:relative;z-index:2}
+
+  /* ═══════════ SIDEBAR ═══════════ */
+  .side{
+    background:linear-gradient(180deg,#0a0e15 0%,#070a10 100%);
+    border-right:1px solid var(--line);
+    display:flex;flex-direction:column;
+    position:sticky;top:0;height:100vh;
+  }
+  .brand{
+    padding:18px 18px 14px;border-bottom:1px solid var(--line);
+    display:flex;align-items:center;gap:11px;
+  }
+  .brand-mark{
+    width:34px;height:34px;border-radius:6px;
+    background:var(--grad-amber);
+    display:grid;place-items:center;
+    font-family:"Chakra Petch",sans-serif;font-weight:700;color:#1a0f02;
+    font-size:13px;letter-spacing:.5px;
+    box-shadow:0 6px 14px -4px rgba(255,122,61,.55), inset 0 1px 0 rgba(255,255,255,.4);
+    position:relative;
+  }
+  .brand-mark::after{content:"";position:absolute;inset:0;border-radius:6px;border:1px solid rgba(255,255,255,.18)}
+  .brand-text{display:flex;flex-direction:column;line-height:1.1}
+  .brand-text b{font-family:"Chakra Petch",sans-serif;font-weight:600;letter-spacing:.5px;font-size:13px;color:#fff}
+  .brand-text span{font-family:"JetBrains Mono",monospace;font-size:9.5px;color:var(--ink-2);letter-spacing:1.4px;margin-top:2px}
+
+  .ops-state{
+    padding:12px 18px 14px;border-bottom:1px solid var(--line);
+    display:flex;flex-direction:column;gap:6px;
+  }
+  .ops-state .row{display:flex;justify-content:space-between;align-items:center;font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.5px}
+  .ops-state .row span:first-child{color:var(--ink-2);text-transform:uppercase;letter-spacing:1.4px;font-size:9.5px}
+  .ops-state .row b{color:var(--ink-0);font-weight:500}
+  .ops-state .pulse{display:inline-flex;align-items:center;gap:6px}
+  .pulse-dot{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 0 0 rgba(61,220,151,.6);animation:pulse 1.8s ease-out infinite}
+  @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(61,220,151,.55)}80%{box-shadow:0 0 0 8px rgba(61,220,151,0)}100%{box-shadow:0 0 0 0 rgba(61,220,151,0)}}
+
+  .nav{flex:1;overflow-y:auto;padding:10px 10px 12px}
+  .nav-group{margin-top:10px}
+  .nav-group:first-child{margin-top:0}
+  .nav-label{
+    font-family:"JetBrains Mono",monospace;font-size:9.5px;
+    color:var(--ink-3);letter-spacing:1.6px;text-transform:uppercase;
+    padding:8px 10px 4px;display:flex;align-items:center;gap:8px;
+  }
+  .nav-label::before{content:"";flex:0 0 14px;height:1px;background:var(--line-2)}
+  .nav-label::after{content:"";flex:1;height:1px;background:var(--line-2)}
+  .nav-item{
+    display:flex;align-items:center;gap:11px;
+    padding:9px 11px;border-radius:6px;
+    color:var(--ink-1);cursor:pointer;
+    transition:background .15s ease,color .15s ease;
+    position:relative;font-size:13px;
+  }
+  .nav-item:hover{background:rgba(255,255,255,.025);color:var(--ink-0)}
+  .nav-item.active{
+    background:linear-gradient(90deg,rgba(255,181,71,.10),rgba(255,181,71,0));
+    color:var(--ink-0);
+  }
+  .nav-item.active::before{
+    content:"";position:absolute;left:-10px;top:6px;bottom:6px;width:2px;
+    background:var(--grad-amber);border-radius:0 2px 2px 0;
+    box-shadow:0 0 12px var(--amber);
+  }
+  .nav-item svg{width:16px;height:16px;flex:0 0 16px;opacity:.85}
+  .nav-item.active svg{color:var(--amber);opacity:1}
+  .nav-item .badge{
+    margin-left:auto;font-family:"JetBrains Mono",monospace;
+    font-size:9.5px;padding:1px 6px;border-radius:10px;
+    background:var(--bg-3);color:var(--ink-1);border:1px solid var(--line-2);
+  }
+  .nav-item .badge.warn{background:var(--amber-soft);color:var(--amber);border-color:transparent}
+  .nav-item .badge.crit{background:var(--red-soft);color:var(--red);border-color:transparent}
+  .nav-item .badge.ok{background:var(--green-soft);color:var(--green);border-color:transparent}
+  .nav-foot{padding:12px 18px;border-top:1px solid var(--line);font-family:"JetBrains Mono",monospace;font-size:10px;color:var(--ink-2);display:flex;justify-content:space-between}
+  .nav-foot b{color:var(--ink-1);font-weight:500}
+
+  /* ═══════════ MAIN ═══════════ */
+  .main{display:flex;flex-direction:column;min-width:0}
+  .top{
+    height:56px;background:rgba(7,10,16,.78);backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+    display:flex;align-items:center;gap:18px;padding:0 22px;
+    position:sticky;top:0;z-index:10;
+  }
+  .crumb{display:flex;align-items:center;gap:8px;font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--ink-2);letter-spacing:.4px}
+  .crumb b{color:var(--ink-0);font-weight:500}
+  .crumb svg{width:11px;height:11px;opacity:.5}
+
+  .clock{
+    margin-left:auto;display:flex;align-items:center;gap:14px;
+    font-family:"JetBrains Mono",monospace;font-size:11px;
+  }
+  .clock-cell{display:flex;flex-direction:column;align-items:flex-end;line-height:1.1}
+  .clock-cell span{color:var(--ink-3);font-size:9px;letter-spacing:1.5px;text-transform:uppercase}
+  .clock-cell b{color:var(--ink-0);font-weight:500;letter-spacing:.5px;margin-top:2px}
+
+  .top-search{
+    width:280px;height:32px;background:var(--bg-2);border:1px solid var(--line);
+    border-radius:6px;display:flex;align-items:center;gap:8px;padding:0 11px;
+    font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--ink-2);
+  }
+  .top-search:focus-within{border-color:var(--amber)}
+  .top-search input{flex:1;background:transparent;border:0;outline:none;color:var(--ink-0);font:inherit}
+  .top-search input::placeholder{color:var(--ink-3)}
+  .top-search kbd{font-family:inherit;font-size:9.5px;padding:1px 5px;background:var(--bg-3);border:1px solid var(--line-2);border-radius:3px;color:var(--ink-2)}
+
+  .top-icon{
+    width:34px;height:34px;border-radius:6px;border:1px solid var(--line);
+    background:var(--bg-2);display:grid;place-items:center;cursor:pointer;
+    color:var(--ink-1);position:relative;
+  }
+  .top-icon:hover{color:var(--ink-0);border-color:var(--line-2)}
+  .top-icon svg{width:16px;height:16px}
+  .top-icon .dot{position:absolute;top:7px;right:7px;width:7px;height:7px;border-radius:50%;background:var(--red);box-shadow:0 0 0 2px var(--bg-2)}
+  .user{display:flex;align-items:center;gap:9px;padding:0 4px 0 0;cursor:pointer}
+  .avatar{
+    width:32px;height:32px;border-radius:6px;
+    background:linear-gradient(135deg,#ffb547,#ff7a3d);
+    display:grid;place-items:center;color:#1a0f02;
+    font-family:"Chakra Petch",sans-serif;font-weight:700;font-size:13px;
+    box-shadow:0 4px 10px -3px rgba(255,122,61,.6);
+  }
+  .user-meta{display:flex;flex-direction:column;line-height:1.15}
+  .user-meta b{font-size:12px;color:var(--ink-0);font-weight:500}
+  .user-meta span{font-family:"JetBrains Mono",monospace;font-size:9.5px;color:var(--ink-2);letter-spacing:1px}
+
+  /* ═══════════ HERO STRIP ═══════════ */
+  .content{padding:18px 22px 28px;display:flex;flex-direction:column;gap:18px}
+
+  .hero{
+    border:1px solid var(--line);border-radius:10px;
+    background:
+      linear-gradient(135deg,rgba(255,181,71,.04),transparent 50%),
+      var(--grad-panel);
+    padding:0;overflow:hidden;position:relative;
+    display:grid;grid-template-columns:auto 1fr auto;align-items:stretch;
+  }
+  .hero::before{
+    content:"";position:absolute;inset:0;pointer-events:none;
+    background-image:
+      linear-gradient(90deg,rgba(255,181,71,.5) 1px,transparent 1px),
+      linear-gradient(0deg,rgba(255,181,71,.5) 1px,transparent 1px);
+    background-size:40px 40px;
+    mask-image:radial-gradient(ellipse 400px 200px at 12% 50%,#000 0%,transparent 70%);
+    opacity:.06;
+  }
+  .hero-status{
+    padding:18px 22px;border-right:1px solid var(--line);
+    display:flex;flex-direction:column;justify-content:center;gap:6px;
+    min-width:240px;position:relative;
+  }
+  .hero-status .tag{font-family:"JetBrains Mono",monospace;font-size:9.5px;letter-spacing:1.6px;color:var(--ink-2);text-transform:uppercase}
+  .hero-status .state{
+    font-family:"Chakra Petch",sans-serif;font-weight:700;
+    font-size:30px;letter-spacing:1px;color:var(--green);
+    display:flex;align-items:center;gap:10px;line-height:1;
+  }
+  .hero-status .state::before{content:"";width:10px;height:10px;border-radius:50%;background:var(--green);box-shadow:0 0 14px var(--green)}
+  .hero-status .meta{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--ink-1);letter-spacing:.4px}
+  .hero-status .meta b{color:var(--amber)}
+
+  .hero-tickers{
+    display:grid;grid-template-columns:repeat(4,1fr);
+    padding:18px 0;align-items:center;
+  }
+  .ticker{padding:0 22px;border-left:1px solid var(--line);display:flex;flex-direction:column;gap:6px}
+  .ticker:first-child{border-left:0}
+  .ticker .lbl{font-family:"JetBrains Mono",monospace;font-size:9.5px;color:var(--ink-2);letter-spacing:1.4px;text-transform:uppercase}
+  .ticker .val{font-family:"Chakra Petch",sans-serif;font-weight:600;font-size:22px;color:var(--ink-0);letter-spacing:.5px;line-height:1}
+  .ticker .sub{font-family:"JetBrains Mono",monospace;font-size:10px;color:var(--ink-1);display:flex;align-items:center;gap:5px}
+  .ticker .sub.up{color:var(--green)}
+  .ticker .sub.down{color:var(--red)}
+  .ticker .sub.warn{color:var(--amber)}
+
+  .hero-shift{
+    padding:18px 22px;border-left:1px solid var(--line);
+    display:flex;flex-direction:column;justify-content:center;gap:8px;min-width:200px;
+  }
+  .hero-shift .lbl{font-family:"JetBrains Mono",monospace;font-size:9.5px;letter-spacing:1.6px;color:var(--ink-2);text-transform:uppercase}
+  .hero-shift .name{font-family:"Chakra Petch",sans-serif;font-weight:600;font-size:18px;color:var(--ink-0)}
+  .hero-shift .progress{height:4px;background:var(--bg-3);border-radius:2px;overflow:hidden;margin-top:2px}
+  .hero-shift .progress-fill{height:100%;width:62%;background:var(--grad-amber);position:relative}
+  .hero-shift .progress-fill::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.4),transparent);animation:shine 2.6s linear infinite}
+  @keyframes shine{0%{transform:translateX(-100%)}100%{transform:translateX(100%)}}
+  .hero-shift .pmeta{font-family:"JetBrains Mono",monospace;font-size:10px;color:var(--ink-2);display:flex;justify-content:space-between}
+
+  /* alert ticker */
+  .alert-ticker{
+    grid-column:1 / -1;
+    border-top:1px solid var(--line);
+    padding:9px 22px;display:flex;align-items:center;gap:14px;
+    background:rgba(255,92,107,.04);
+    font-family:"JetBrains Mono",monospace;font-size:11px;
+    overflow:hidden;
+  }
+  .alert-ticker .chip{
+    flex:0 0 auto;padding:2px 8px;border-radius:3px;
+    background:var(--red-soft);color:var(--red);
+    font-size:9.5px;letter-spacing:1.4px;font-weight:600;
+  }
+  .alert-track{display:flex;gap:32px;animation:scroll 38s linear infinite;white-space:nowrap;color:var(--ink-1)}
+  .alert-track b{color:var(--amber);margin-right:6px}
+  @keyframes scroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+  /* ═══════════ KPI ROW ═══════════ */
+  .kpis{display:grid;grid-template-columns:repeat(6,1fr);gap:12px}
+  .kpi{
+    background:var(--grad-panel);border:1px solid var(--line);border-radius:8px;
+    padding:13px 15px;position:relative;overflow:hidden;cursor:pointer;
+    transition:border-color .2s ease, transform .2s ease;
+  }
+  .kpi:hover{border-color:var(--line-2);transform:translateY(-1px)}
+  .kpi::before{content:"";position:absolute;left:0;top:0;bottom:0;width:2px;background:var(--ink-3)}
+  .kpi.amber::before{background:var(--amber);box-shadow:0 0 10px var(--amber)}
+  .kpi.cyan::before{background:var(--cyan);box-shadow:0 0 10px var(--cyan)}
+  .kpi.green::before{background:var(--green);box-shadow:0 0 10px var(--green)}
+  .kpi.red::before{background:var(--red);box-shadow:0 0 10px var(--red)}
+  .kpi.violet::before{background:var(--violet);box-shadow:0 0 10px var(--violet)}
+  .kpi-head{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px}
+  .kpi-lbl{font-family:"JetBrains Mono",monospace;font-size:9.5px;letter-spacing:1.5px;color:var(--ink-2);text-transform:uppercase}
+  .kpi-icon{width:14px;height:14px;color:var(--ink-3)}
+  .kpi-val{
+    font-family:"Chakra Petch",sans-serif;font-weight:700;
+    font-size:30px;color:var(--ink-0);letter-spacing:.5px;line-height:1;
+    display:flex;align-items:baseline;gap:4px;
+  }
+  .kpi-val small{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--ink-2);font-weight:400;letter-spacing:.5px}
+  .kpi-foot{display:flex;justify-content:space-between;align-items:center;margin-top:8px}
+  .kpi-delta{font-family:"JetBrains Mono",monospace;font-size:10.5px;display:flex;align-items:center;gap:3px;color:var(--ink-2)}
+  .kpi-delta.up{color:var(--green)} .kpi-delta.down{color:var(--red)} .kpi-delta.warn{color:var(--amber)}
+  .spark{height:22px;width:60px}
+
+  /* ═══════════ GRID ═══════════ */
+  .grid-main{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(0,1fr) minmax(0,1fr);gap:14px}
+  .panel{
+    background:var(--grad-panel);border:1px solid var(--line);border-radius:10px;
+    overflow:hidden;display:flex;flex-direction:column;
+  }
+  .panel-head{
+    padding:12px 16px;border-bottom:1px solid var(--line);
+    display:flex;justify-content:space-between;align-items:center;gap:10px;
+  }
+  .panel-title{display:flex;align-items:center;gap:9px;font-family:"Chakra Petch",sans-serif;font-weight:600;font-size:13px;letter-spacing:.5px;color:var(--ink-0)}
+  .panel-title svg{width:14px;height:14px;color:var(--amber)}
+  .panel-title small{font-family:"JetBrains Mono",monospace;font-size:9.5px;letter-spacing:1.4px;color:var(--ink-2);font-weight:400;text-transform:uppercase;margin-left:4px}
+  .panel-actions{display:flex;align-items:center;gap:8px}
+  .seg{display:inline-flex;border:1px solid var(--line);border-radius:5px;overflow:hidden;font-family:"JetBrains Mono",monospace;font-size:10px}
+  .seg span{padding:4px 9px;color:var(--ink-2);cursor:pointer;letter-spacing:.6px}
+  .seg span.on{background:var(--bg-3);color:var(--ink-0)}
+  .panel-body{padding:6px 0;flex:1;min-height:0;overflow:auto}
+
+  /* work-cards table */
+  table.wc{width:100%;border-collapse:collapse;font-size:12px}
+  table.wc th, table.wc td{padding:9px 16px;text-align:left;vertical-align:middle}
+  table.wc thead th{
+    font-family:"JetBrains Mono",monospace;font-size:9.5px;
+    color:var(--ink-2);letter-spacing:1.4px;text-transform:uppercase;font-weight:500;
+    border-bottom:1px solid var(--line);background:var(--bg-1);
+    position:sticky;top:0;
+  }
+  table.wc tbody tr{border-bottom:1px solid rgba(29,38,50,.5)}
+  table.wc tbody tr:hover{background:rgba(255,255,255,.018)}
+  table.wc tbody tr:last-child{border-bottom:0}
+  .tail{font-family:"JetBrains Mono",monospace;font-weight:500;color:var(--ink-0);letter-spacing:.5px}
+  .tech{display:flex;align-items:center;gap:7px;color:var(--ink-1)}
+  .tech .av{width:22px;height:22px;border-radius:50%;background:var(--bg-3);border:1px solid var(--line-2);display:grid;place-items:center;font-family:"Chakra Petch";font-size:10px;color:var(--ink-1);font-weight:600}
+  .chip{display:inline-flex;align-items:center;gap:5px;padding:2px 8px;border-radius:3px;font-family:"JetBrains Mono",monospace;font-size:9.5px;letter-spacing:1px;text-transform:uppercase;font-weight:600}
+  .chip.p1{background:var(--red-soft);color:var(--red)}
+  .chip.p2{background:var(--amber-soft);color:var(--amber)}
+  .chip.p3{background:var(--cyan-soft);color:var(--cyan)}
+  .chip.p4{background:#1c2433;color:var(--ink-1)}
+  .chip::before{content:"";width:5px;height:5px;border-radius:50%;background:currentColor;box-shadow:0 0 6px currentColor}
+  .pbar{height:5px;background:var(--bg-3);border-radius:3px;overflow:hidden;width:90px;display:inline-block;vertical-align:middle;margin-right:8px}
+  .pbar i{display:block;height:100%;background:var(--grad-amber)}
+  .pbar.green i{background:linear-gradient(90deg,var(--green),#5fffb6)}
+  .pbar.red i{background:linear-gradient(90deg,var(--red),#ff8a96)}
+  .pct{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--ink-1)}
+
+  /* hangar floor */
+  .hangar{padding:14px 16px}
+  .hangar-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+  .bay{
+    aspect-ratio:1.45/1;border:1px solid var(--line);border-radius:8px;
+    background:linear-gradient(135deg,var(--bg-2),var(--bg-1));
+    padding:10px;position:relative;overflow:hidden;
+    display:flex;flex-direction:column;justify-content:space-between;
+    cursor:pointer;transition:border-color .15s ease;
+  }
+  .bay:hover{border-color:var(--line-2)}
+  .bay::before{
+    content:"";position:absolute;inset:0;pointer-events:none;
+    background-image:linear-gradient(0deg,rgba(255,255,255,.025) 1px,transparent 1px);
+    background-size:100% 9px;
+  }
+  .bay-id{font-family:"JetBrains Mono",monospace;font-size:9.5px;letter-spacing:1.4px;color:var(--ink-3);position:relative}
+  .bay-tail{font-family:"Chakra Petch";font-weight:700;font-size:14px;letter-spacing:.5px;position:relative;color:var(--ink-0)}
+  .bay-status{font-family:"JetBrains Mono",monospace;font-size:9px;letter-spacing:1px;text-transform:uppercase;position:relative;display:flex;align-items:center;gap:5px}
+  .bay-status::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor;box-shadow:0 0 6px currentColor}
+  .bay.maint{border-color:rgba(255,181,71,.35)}
+  .bay.maint .bay-status{color:var(--amber)}
+  .bay.maint .bay-tail{color:var(--amber)}
+  .bay.ready{border-color:rgba(61,220,151,.3)}
+  .bay.ready .bay-status{color:var(--green)}
+  .bay.fault{border-color:rgba(255,92,107,.4);background:linear-gradient(135deg,rgba(255,92,107,.08),var(--bg-1))}
+  .bay.fault .bay-status{color:var(--red)}
+  .bay.fault .bay-tail{color:var(--red)}
+  .bay.empty{opacity:.5;border-style:dashed}
+  .bay.empty .bay-status{color:var(--ink-3)}
+  .bay-plane{
+    position:absolute;right:-8px;bottom:-6px;width:64px;height:48px;
+    color:rgba(255,255,255,.07);
+  }
+  .bay.fault .bay-plane{color:rgba(255,92,107,.18)}
+  .bay.maint .bay-plane{color:rgba(255,181,71,.16)}
+  .bay.ready .bay-plane{color:rgba(61,220,151,.14)}
+
+  /* AR sessions */
+  .ar-list{display:flex;flex-direction:column;padding:6px 0}
+  .ar{
+    padding:11px 16px;border-bottom:1px solid rgba(29,38,50,.5);
+    display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;
+  }
+  .ar:last-child{border-bottom:0}
+  .ar:hover{background:rgba(255,255,255,.018)}
+  .ar-pulse{
+    width:34px;height:34px;border-radius:8px;
+    background:linear-gradient(135deg,#0e3a48,#0a1f29);
+    display:grid;place-items:center;color:var(--cyan);
+    border:1px solid rgba(95,217,255,.3);position:relative;
+  }
+  .ar-pulse::after{
+    content:"";position:absolute;inset:-3px;border-radius:10px;
+    border:1px solid var(--cyan);opacity:.5;
+    animation:ringpulse 2s ease-out infinite;
+  }
+  @keyframes ringpulse{0%{transform:scale(.9);opacity:.7}100%{transform:scale(1.25);opacity:0}}
+  .ar-pulse svg{width:14px;height:14px}
+  .ar-mid b{font-family:"Chakra Petch";font-weight:600;font-size:13px;color:var(--ink-0);letter-spacing:.4px;display:block}
+  .ar-mid span{font-family:"JetBrains Mono",monospace;font-size:10.5px;color:var(--ink-2);letter-spacing:.4px}
+  .ar-mid span b{font-family:"JetBrains Mono";font-weight:500;color:var(--ink-1);font-size:10.5px;display:inline}
+  .ar-right{display:flex;flex-direction:column;align-items:flex-end;gap:3px}
+  .ar-right .dur{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--cyan);font-weight:500;letter-spacing:.5px}
+  .ar-right .ppl{display:flex}
+  .ar-right .ppl .av{
+    width:20px;height:20px;border-radius:50%;border:2px solid var(--bg-2);
+    display:grid;place-items:center;font-family:"Chakra Petch";font-size:9px;
+    font-weight:600;color:#1a0f02;margin-left:-6px;
+  }
+  .ar-right .ppl .av:first-child{margin-left:0}
+  .av-a{background:#ffb547} .av-b{background:#5fd9ff;color:#0c2a35} .av-c{background:#3ddc97;color:#0c2a18} .av-d{background:#9d8cff;color:#1a1235}
+
+  /* bottom row */
+  .grid-bot{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.4fr) minmax(0,1fr);gap:14px}
+
+  /* gauge */
+  .gauge-wrap{padding:14px 16px;display:flex;align-items:center;gap:18px;flex:1}
+  .gauge{width:130px;height:130px;flex:0 0 130px;position:relative}
+  .gauge svg{width:100%;height:100%;transform:rotate(-90deg)}
+  .gauge .track{stroke:var(--bg-3);fill:none;stroke-width:10}
+  .gauge .arc{stroke:url(#g-grad);fill:none;stroke-width:10;stroke-linecap:round;filter:drop-shadow(0 0 6px rgba(61,220,151,.5))}
+  .gauge .center{
+    position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;
+    font-family:"Chakra Petch";font-weight:700;
+  }
+  .gauge .center b{font-size:34px;color:var(--ink-0);line-height:1;letter-spacing:.5px}
+  .gauge .center small{font-family:"JetBrains Mono",monospace;font-size:9px;color:var(--ink-2);letter-spacing:1.4px;margin-top:4px;text-transform:uppercase}
+  .gauge-meta{flex:1;display:flex;flex-direction:column;gap:9px;font-size:11px;font-family:"JetBrains Mono",monospace}
+  .gauge-meta .row{display:flex;justify-content:space-between;color:var(--ink-1)}
+  .gauge-meta .row span:first-child{color:var(--ink-2)}
+  .gauge-meta .row b{color:var(--ink-0);font-weight:500}
+
+  /* fault categories */
+  .cats{padding:10px 16px;display:flex;flex-direction:column;gap:9px}
+  .cat{display:grid;grid-template-columns:90px 1fr 36px;gap:10px;align-items:center;font-size:11px}
+  .cat-name{color:var(--ink-1);font-family:"Chakra Petch";font-weight:500;letter-spacing:.3px}
+  .cat-bar{height:8px;background:var(--bg-3);border-radius:2px;overflow:hidden;position:relative}
+  .cat-bar i{display:block;height:100%}
+  .cat-bar i.amber{background:linear-gradient(90deg,var(--amber),#ff7a3d)}
+  .cat-bar i.cyan{background:linear-gradient(90deg,var(--cyan),#7c8fff)}
+  .cat-bar i.red{background:linear-gradient(90deg,var(--red),#ff8a96)}
+  .cat-bar i.green{background:linear-gradient(90deg,var(--green),#5fffb6)}
+  .cat-bar i.violet{background:linear-gradient(90deg,var(--violet),#5fd9ff)}
+  .cat-num{font-family:"JetBrains Mono",monospace;color:var(--ink-0);text-align:right;font-weight:500}
+
+  /* telemetry log */
+  .log{padding:0;font-family:"JetBrains Mono",monospace;font-size:11px;line-height:1.7;flex:1;overflow:auto}
+  .log-row{padding:5px 16px;border-bottom:1px solid rgba(29,38,50,.4);display:grid;grid-template-columns:64px 56px 1fr;gap:10px;align-items:baseline}
+  .log-row:last-child{border-bottom:0}
+  .log-time{color:var(--ink-3);font-size:10.5px;letter-spacing:.5px}
+  .log-lvl{font-size:9.5px;letter-spacing:1.2px;font-weight:600}
+  .log-lvl.info{color:var(--cyan)} .log-lvl.warn{color:var(--amber)} .log-lvl.err{color:var(--red)} .log-lvl.ok{color:var(--green)}
+  .log-msg{color:var(--ink-1)}
+  .log-msg b{color:var(--ink-0);font-weight:500}
+
+  /* page-load reveal */
+  .reveal{opacity:0;transform:translateY(8px);animation:reveal .55s cubic-bezier(.2,.7,.2,1) forwards}
+  @keyframes reveal{to{opacity:1;transform:none}}
+
+  @media (max-width: 1280px){
+    .kpis{grid-template-columns:repeat(3,1fr)}
+    .grid-main{grid-template-columns:1fr 1fr}
+    .grid-main > :first-child{grid-column:1/-1}
+    .grid-bot{grid-template-columns:1fr}
+  }
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute">
+  <defs>
+    <linearGradient id="g-grad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#3ddc97"/>
+      <stop offset="100%" stop-color="#5fd9ff"/>
+    </linearGradient>
+  </defs>
+</svg>
+
+<div class="app">
+
+  <!-- ═══════════ SIDEBAR ═══════════ -->
+  <aside class="side">
+    <div class="brand">
+      <div class="brand-mark">AI</div>
+      <div class="brand-text">
+        <b>AI工作辅助系统</b>
+        <span>MRO · OPS · v2.4</span>
+      </div>
+    </div>
+
+    <div class="ops-state">
+      <div class="row"><span>OPS STATE</span><b class="pulse"><span class="pulse-dot"></span>NOMINAL</b></div>
+      <div class="row"><span>SHIFT</span><b>DAY · 06:00–18:00</b></div>
+      <div class="row"><span>UTC OFFSET</span><b>+08:00</b></div>
+    </div>
+
+    <nav class="nav">
+      <div class="nav-group">
+        <div class="nav-label">概览</div>
+        <div class="nav-item active">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg>
+          仪表板<span class="badge ok">LIVE</span>
+        </div>
+      </div>
+
+      <div class="nav-group">
+        <div class="nav-label">作业</div>
+        <div class="nav-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 12h6m-6 4h4M7 4h7l5 5v11a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/></svg>
+          电子工卡<span class="badge warn">47</span>
+        </div>
+        <div class="nav-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2v4m0 12v4M4.93 4.93l2.83 2.83m8.48 8.48 2.83 2.83M2 12h4m12 0h4M4.93 19.07l2.83-2.83m8.48-8.48 2.83-2.83"/><circle cx="12" cy="12" r="3"/></svg>
+          排故助手<span class="badge crit">8</span>
+        </div>
+        <div class="nav-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 19V6a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v13l-4-3-4 3-4-3-4 3z"/></svg>
+          手册管理
+        </div>
+        <div class="nav-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 9l9-6 9 6v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M8 22V12h8v10"/></svg>
+          机库管理<span class="badge">6</span>
+        </div>
+        <div class="nav-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="m14.7 6.3 3 3-9.7 9.7H5v-3z"/><path d="M3 21h18"/></svg>
+          工具机材
+        </div>
+      </div>
+
+      <div class="nav-group">
+        <div class="nav-label">协作 & 培训</div>
+        <div class="nav-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33h0a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51h0a1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82v0a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+          AR协作<span class="badge ok">3</span>
+        </div>
+        <div class="nav-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 12a2.5 2.5 0 0 0-2-2.45V8a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v1.55A2.5 2.5 0 0 0 3 12v3a2.5 2.5 0 0 0 2 2.45V18a4 4 0 0 0 4 4h6a4 4 0 0 0 4-4v-.55A2.5 2.5 0 0 0 21 15z"/><circle cx="9" cy="13" r="1.2"/><circle cx="15" cy="13" r="1.2"/></svg>
+          VR培训<span class="badge">94%</span>
+        </div>
+        <div class="nav-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          健康管理
+        </div>
+      </div>
+
+      <div class="nav-group">
+        <div class="nav-label">系统</div>
+        <div class="nav-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg>
+          系统管理
+        </div>
+      </div>
+    </nav>
+
+    <div class="nav-foot">
+      <span>BUILD <b>2.4.108</b></span>
+      <span>UP <b>17d 04h</b></span>
+    </div>
+  </aside>
+
+  <!-- ═══════════ MAIN ═══════════ -->
+  <main class="main">
+
+    <header class="top">
+      <div class="crumb"><span>HOME</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg><b>OPS DASHBOARD</b></div>
+
+      <div class="top-search">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+        <input placeholder="搜索工卡 · 机号 · 故障编号"/>
+        <kbd>⌘K</kbd>
+      </div>
+
+      <div class="clock">
+        <div class="clock-cell"><span>UTC</span><b id="utc">06:21:14</b></div>
+        <div class="clock-cell"><span>LOCAL · CST</span><b id="local">14:21:14</b></div>
+      </div>
+
+      <div class="top-icon" title="告警">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>
+        <span class="dot"></span>
+      </div>
+      <div class="top-icon" title="设置">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33h0a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51h0a1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82v0a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+      </div>
+      <div class="user">
+        <div class="user-meta"><b>管理员</b><span>OPS-LEAD · L4</span></div>
+        <div class="avatar">A</div>
+      </div>
+    </header>
+
+    <div class="content">
+
+      <!-- HERO STRIP -->
+      <section class="hero reveal" style="animation-delay:.05s">
+        <div class="hero-status">
+          <span class="tag">FLEET OPERATIONAL STATUS</span>
+          <div class="state">NOMINAL</div>
+          <div class="meta">2026-05-25 · DAY SHIFT · <b>SOL-04</b></div>
+        </div>
+        <div class="hero-tickers">
+          <div class="ticker">
+            <span class="lbl">FLEET READY</span>
+            <span class="val">24<small style="color:var(--ink-3);font-size:14px">/26</small></span>
+            <span class="sub up">▲ 92.3% · +1 vs YDA</span>
+          </div>
+          <div class="ticker">
+            <span class="lbl">ACTIVE WORK CARDS</span>
+            <span class="val">47</span>
+            <span class="sub warn">● 12 P1 · 18 P2 · 17 P3</span>
+          </div>
+          <div class="ticker">
+            <span class="lbl">OPEN FAULTS</span>
+            <span class="val" style="color:var(--red)">8</span>
+            <span class="sub down">▲ +2 · 1 critical</span>
+          </div>
+          <div class="ticker">
+            <span class="lbl">AR SESSIONS LIVE</span>
+            <span class="val" style="color:var(--cyan)">3</span>
+            <span class="sub">● 7 technicians remote</span>
+          </div>
+        </div>
+        <div class="hero-shift">
+          <span class="lbl">SHIFT PROGRESS</span>
+          <span class="name">DAY · BLOCK B</span>
+          <div class="progress"><div class="progress-fill"></div></div>
+          <div class="pmeta"><span>06:00</span><span>14:21 · 62%</span><span>18:00</span></div>
+        </div>
+        <div class="alert-ticker">
+          <span class="chip">ALERT</span>
+          <div class="alert-track">
+            <span><b>FLT-2287</b> 机号 B-6042 — 液压系统 P3 压力告警 · 09:42</span>
+            <span><b>WC-14093</b> 工具借出超时 · 扭矩扳手 #TK-221 · 4h12m</span>
+            <span><b>FLT-2287</b> 机号 B-6042 — 液压系统 P3 压力告警 · 09:42</span>
+            <span><b>WC-14093</b> 工具借出超时 · 扭矩扳手 #TK-221 · 4h12m</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- KPI ROW -->
+      <section class="kpis">
+        <div class="kpi amber reveal" style="animation-delay:.10s">
+          <div class="kpi-head"><span class="kpi-lbl">活跃工卡</span>
+            <svg class="kpi-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12h6m-6 4h4M7 4h7l5 5v11a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/></svg>
+          </div>
+          <div class="kpi-val">47<small>· 12 P1</small></div>
+          <div class="kpi-foot">
+            <span class="kpi-delta up">▲ +6 / 24h</span>
+            <svg class="spark" viewBox="0 0 60 22"><polyline fill="none" stroke="#ffb547" stroke-width="1.5" points="0,16 8,14 16,17 24,11 32,12 40,8 48,10 56,5 60,7"/></svg>
+          </div>
+        </div>
+
+        <div class="kpi red reveal" style="animation-delay:.13s">
+          <div class="kpi-head"><span class="kpi-lbl">故障开放</span>
+            <svg class="kpi-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v4m0 12v4M4.93 4.93l2.83 2.83m8.48 8.48 2.83 2.83M2 12h4m12 0h4"/></svg>
+          </div>
+          <div class="kpi-val">8<small>· 1 紧急</small></div>
+          <div class="kpi-foot">
+            <span class="kpi-delta down">▲ +2 / 24h</span>
+            <svg class="spark" viewBox="0 0 60 22"><polyline fill="none" stroke="#ff5c6b" stroke-width="1.5" points="0,18 8,17 16,16 24,15 32,12 40,11 48,8 56,6 60,4"/></svg>
+          </div>
+        </div>
+
+        <div class="kpi green reveal" style="animation-delay:.16s">
+          <div class="kpi-head"><span class="kpi-lbl">机队可用</span>
+            <svg class="kpi-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15s-3-2-9-2-9 2-9 2 3 4 9 4 9-4 9-4z"/><path d="M14 11.5 12 4l-2 7.5"/></svg>
+          </div>
+          <div class="kpi-val">92.3<small>%</small></div>
+          <div class="kpi-foot">
+            <span class="kpi-delta up">▲ 24/26 · +3.8%</span>
+            <svg class="spark" viewBox="0 0 60 22"><polyline fill="none" stroke="#3ddc97" stroke-width="1.5" points="0,12 8,14 16,11 24,10 32,8 40,9 48,6 56,5 60,5"/></svg>
+          </div>
+        </div>
+
+        <div class="kpi cyan reveal" style="animation-delay:.19s">
+          <div class="kpi-head"><span class="kpi-lbl">AR · VR 在线</span>
+            <svg class="kpi-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a2.5 2.5 0 0 0-2-2.45V8a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v1.55A2.5 2.5 0 0 0 3 12v3a2.5 2.5 0 0 0 2 2.45V18a4 4 0 0 0 4 4h6a4 4 0 0 0 4-4v-.55A2.5 2.5 0 0 0 21 15z"/></svg>
+          </div>
+          <div class="kpi-val">3<small>· 7 技师</small></div>
+          <div class="kpi-foot">
+            <span class="kpi-delta">● 平均时长 22m</span>
+            <svg class="spark" viewBox="0 0 60 22"><polyline fill="none" stroke="#5fd9ff" stroke-width="1.5" points="0,15 8,11 16,13 24,9 32,11 40,7 48,9 56,6 60,8"/></svg>
+          </div>
+        </div>
+
+        <div class="kpi violet reveal" style="animation-delay:.22s">
+          <div class="kpi-head"><span class="kpi-lbl">培训合规</span>
+            <svg class="kpi-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m22 10-10-5L2 10l10 5 10-5z"/><path d="M6 12v5c3 1.5 9 1.5 12 0v-5"/></svg>
+          </div>
+          <div class="kpi-val">94<small>%</small></div>
+          <div class="kpi-foot">
+            <span class="kpi-delta up">▲ 218/232</span>
+            <svg class="spark" viewBox="0 0 60 22"><polyline fill="none" stroke="#9d8cff" stroke-width="1.5" points="0,14 8,12 16,13 24,10 32,11 40,8 48,9 56,7 60,6"/></svg>
+          </div>
+        </div>
+
+        <div class="kpi reveal" style="animation-delay:.25s">
+          <div class="kpi-head"><span class="kpi-lbl">工具借出</span>
+            <svg class="kpi-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m14.7 6.3 3 3-9.7 9.7H5v-3z"/></svg>
+          </div>
+          <div class="kpi-val">156<small>· 1 超时</small></div>
+          <div class="kpi-foot">
+            <span class="kpi-delta warn">▲ +12 / 24h</span>
+            <svg class="spark" viewBox="0 0 60 22"><polyline fill="none" stroke="#a8b3c4" stroke-width="1.5" points="0,12 8,15 16,11 24,13 32,9 40,11 48,8 56,10 60,7"/></svg>
+          </div>
+        </div>
+      </section>
+
+      <!-- MAIN GRID -->
+      <section class="grid-main">
+
+        <!-- Active work cards -->
+        <div class="panel reveal" style="animation-delay:.28s">
+          <div class="panel-head">
+            <div class="panel-title">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12h6m-6 4h4M7 4h7l5 5v11a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/></svg>
+              进行中工卡<small>· LIVE 47</small>
+            </div>
+            <div class="panel-actions">
+              <div class="seg"><span class="on">全部</span><span>P1</span><span>P2</span><span>已分配</span></div>
+            </div>
+          </div>
+          <div class="panel-body">
+            <table class="wc">
+              <thead><tr>
+                <th>WC#</th><th>优先级</th><th>机号</th><th>系统</th><th>技师</th><th>进度</th><th>ETA</th>
+              </tr></thead>
+              <tbody>
+                <tr>
+                  <td class="tail">14093</td>
+                  <td><span class="chip p1">P1</span></td>
+                  <td class="tail">B-6042</td>
+                  <td>液压 ATA-29</td>
+                  <td><div class="tech"><div class="av">LZ</div>李志强</div></td>
+                  <td><span class="pbar red"><i style="width:32%"></i></span><span class="pct">32%</span></td>
+                  <td class="tail">+2h 40m</td>
+                </tr>
+                <tr>
+                  <td class="tail">14087</td>
+                  <td><span class="chip p1">P1</span></td>
+                  <td class="tail">B-1907</td>
+                  <td>发动机 ATA-72</td>
+                  <td><div class="tech"><div class="av">WX</div>王晓东</div></td>
+                  <td><span class="pbar"><i style="width:71%"></i></span><span class="pct">71%</span></td>
+                  <td class="tail">+45m</td>
+                </tr>
+                <tr>
+                  <td class="tail">14082</td>
+                  <td><span class="chip p2">P2</span></td>
+                  <td class="tail">B-3318</td>
+                  <td>起落架 ATA-32</td>
+                  <td><div class="tech"><div class="av">CY</div>陈宇</div></td>
+                  <td><span class="pbar green"><i style="width:88%"></i></span><span class="pct">88%</span></td>
+                  <td class="tail">+12m</td>
+                </tr>
+                <tr>
+                  <td class="tail">14079</td>
+                  <td><span class="chip p2">P2</span></td>
+                  <td class="tail">B-6042</td>
+                  <td>飞控 ATA-27</td>
+                  <td><div class="tech"><div class="av">ZH</div>赵航</div></td>
+                  <td><span class="pbar"><i style="width:54%"></i></span><span class="pct">54%</span></td>
+                  <td class="tail">+1h 20m</td>
+                </tr>
+                <tr>
+                  <td class="tail">14066</td>
+                  <td><span class="chip p3">P3</span></td>
+                  <td class="tail">B-2280</td>
+                  <td>客舱 ATA-25</td>
+                  <td><div class="tech"><div class="av">SM</div>孙明</div></td>
+                  <td><span class="pbar green"><i style="width:96%"></i></span><span class="pct">96%</span></td>
+                  <td class="tail">+5m</td>
+                </tr>
+                <tr>
+                  <td class="tail">14059</td>
+                  <td><span class="chip p3">P3</span></td>
+                  <td class="tail">B-7105</td>
+                  <td>电气 ATA-24</td>
+                  <td><div class="tech"><div class="av">LJ</div>林佳</div></td>
+                  <td><span class="pbar"><i style="width:42%"></i></span><span class="pct">42%</span></td>
+                  <td class="tail">+2h 10m</td>
+                </tr>
+                <tr>
+                  <td class="tail">14051</td>
+                  <td><span class="chip p4">P4</span></td>
+                  <td class="tail">B-1907</td>
+                  <td>结构 ATA-53</td>
+                  <td><div class="tech"><div class="av">HQ</div>胡强</div></td>
+                  <td><span class="pbar"><i style="width:18%"></i></span><span class="pct">18%</span></td>
+                  <td class="tail">+5h</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Hangar floor -->
+        <div class="panel reveal" style="animation-delay:.32s">
+          <div class="panel-head">
+            <div class="panel-title">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-6 9 6v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+              机库占位<small>· 6 BAYS</small>
+            </div>
+            <div class="panel-actions"><div class="seg"><span class="on">实时</span><span>计划</span></div></div>
+          </div>
+          <div class="hangar">
+            <div class="hangar-grid">
+              <div class="bay maint">
+                <div>
+                  <div class="bay-id">BAY · 01</div>
+                  <div class="bay-tail">B-6042</div>
+                </div>
+                <div class="bay-status">维护中 · A-CHECK</div>
+                <svg class="bay-plane" viewBox="0 0 64 48" fill="currentColor"><path d="M2 26h26l8-14h6l-2 14h12l4-6h4l-2 8 2 8h-4l-4-6H40l2 14h-6l-8-14H2z"/></svg>
+              </div>
+              <div class="bay fault">
+                <div>
+                  <div class="bay-id">BAY · 02</div>
+                  <div class="bay-tail">B-1907</div>
+                </div>
+                <div class="bay-status">故障 · ATA-72</div>
+                <svg class="bay-plane" viewBox="0 0 64 48" fill="currentColor"><path d="M2 26h26l8-14h6l-2 14h12l4-6h4l-2 8 2 8h-4l-4-6H40l2 14h-6l-8-14H2z"/></svg>
+              </div>
+              <div class="bay ready">
+                <div>
+                  <div class="bay-id">BAY · 03</div>
+                  <div class="bay-tail">B-3318</div>
+                </div>
+                <div class="bay-status">就绪 · 待签放</div>
+                <svg class="bay-plane" viewBox="0 0 64 48" fill="currentColor"><path d="M2 26h26l8-14h6l-2 14h12l4-6h4l-2 8 2 8h-4l-4-6H40l2 14h-6l-8-14H2z"/></svg>
+              </div>
+              <div class="bay maint">
+                <div>
+                  <div class="bay-id">BAY · 04</div>
+                  <div class="bay-tail">B-7105</div>
+                </div>
+                <div class="bay-status">维护中 · B-CHECK</div>
+                <svg class="bay-plane" viewBox="0 0 64 48" fill="currentColor"><path d="M2 26h26l8-14h6l-2 14h12l4-6h4l-2 8 2 8h-4l-4-6H40l2 14h-6l-8-14H2z"/></svg>
+              </div>
+              <div class="bay ready">
+                <div>
+                  <div class="bay-id">BAY · 05</div>
+                  <div class="bay-tail">B-2280</div>
+                </div>
+                <div class="bay-status">就绪 · 14:35 出库</div>
+                <svg class="bay-plane" viewBox="0 0 64 48" fill="currentColor"><path d="M2 26h26l8-14h6l-2 14h12l4-6h4l-2 8 2 8h-4l-4-6H40l2 14h-6l-8-14H2z"/></svg>
+              </div>
+              <div class="bay empty">
+                <div>
+                  <div class="bay-id">BAY · 06</div>
+                  <div class="bay-tail">— —</div>
+                </div>
+                <div class="bay-status">空闲 · 16:00 入位</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- AR sessions -->
+        <div class="panel reveal" style="animation-delay:.36s">
+          <div class="panel-head">
+            <div class="panel-title">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M21 12c-1.7 4-5.4 7-9 7s-7.3-3-9-7c1.7-4 5.4-7 9-7s7.3 3 9 7z"/></svg>
+              AR 协作 · LIVE<small>· 3 SESSIONS</small>
+            </div>
+            <div class="panel-actions"><div class="seg"><span class="on">在线</span><span>已结束</span></div></div>
+          </div>
+          <div class="ar-list">
+            <div class="ar">
+              <div class="ar-pulse"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M21 12c-1.7 4-5.4 7-9 7s-7.3-3-9-7c1.7-4 5.4-7 9-7s7.3 3 9 7z"/></svg></div>
+              <div class="ar-mid">
+                <b>AR-S/2287 · 液压故障定位</b>
+                <span>B-6042 · ATA-29 · 现场 <b>李志强</b> ↔ 后台 <b>王工</b></span>
+              </div>
+              <div class="ar-right">
+                <span class="dur">22:41</span>
+                <div class="ppl"><div class="av av-a">李</div><div class="av av-b">王</div></div>
+              </div>
+            </div>
+            <div class="ar">
+              <div class="ar-pulse" style="background:linear-gradient(135deg,#3b2812,#1a0f02);color:var(--amber);border-color:rgba(255,181,71,.3)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12h6m-6 4h4M7 4h7l5 5v11a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/></svg></div>
+              <div class="ar-mid">
+                <b>AR-S/2289 · 工卡复核</b>
+                <span>B-1907 · ATA-72 · 现场 <b>王晓东</b> ↔ 质检 <b>陈工</b></span>
+              </div>
+              <div class="ar-right">
+                <span class="dur" style="color:var(--amber)">14:08</span>
+                <div class="ppl"><div class="av av-a">王</div><div class="av av-c">陈</div></div>
+              </div>
+            </div>
+            <div class="ar">
+              <div class="ar-pulse" style="background:linear-gradient(135deg,#0e3b27,#0a1f15);color:var(--green);border-color:rgba(61,220,151,.3)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a2.5 2.5 0 0 0-2-2.45V8a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v1.55A2.5 2.5 0 0 0 3 12v3a2.5 2.5 0 0 0 2 2.45V18a4 4 0 0 0 4 4h6a4 4 0 0 0 4-4v-.55A2.5 2.5 0 0 0 21 15z"/></svg></div>
+              <div class="ar-mid">
+                <b>AR-S/2290 · 新员工带教</b>
+                <span>培训机 · 起落架 · 师傅 <b>赵航</b> + 学员 ×3</span>
+              </div>
+              <div class="ar-right">
+                <span class="dur" style="color:var(--green)">08:53</span>
+                <div class="ppl"><div class="av av-a">赵</div><div class="av av-b">L</div><div class="av av-c">M</div><div class="av av-d">+1</div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- BOTTOM ROW -->
+      <section class="grid-bot">
+
+        <!-- Training compliance gauge -->
+        <div class="panel reveal" style="animation-delay:.40s">
+          <div class="panel-head">
+            <div class="panel-title">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m22 10-10-5L2 10l10 5 10-5z"/><path d="M6 12v5c3 1.5 9 1.5 12 0v-5"/></svg>
+              资质合规率<small>· 30D</small>
+            </div>
+            <div class="panel-actions"><div class="seg"><span class="on">总览</span><span>按机型</span></div></div>
+          </div>
+          <div class="gauge-wrap">
+            <div class="gauge">
+              <svg viewBox="0 0 100 100">
+                <circle class="track" cx="50" cy="50" r="42"/>
+                <circle class="arc" cx="50" cy="50" r="42" stroke-dasharray="263.89" stroke-dashoffset="15.83"/>
+              </svg>
+              <div class="center"><b>94<span style="font-size:18px;color:var(--ink-2);font-weight:400">%</span></b><small>COMPLIANCE</small></div>
+            </div>
+            <div class="gauge-meta">
+              <div class="row"><span>已合规</span><b>218 人</b></div>
+              <div class="row"><span>30天到期</span><b style="color:var(--amber)">10 人</b></div>
+              <div class="row"><span>已逾期</span><b style="color:var(--red)">4 人</b></div>
+              <div class="row"><span>VR课时本月</span><b>1,287 h</b></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Fault by category -->
+        <div class="panel reveal" style="animation-delay:.44s">
+          <div class="panel-head">
+            <div class="panel-title">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="m7 14 4-4 4 4 5-7"/></svg>
+              故障分布<small>· BY ATA · 7D</small>
+            </div>
+            <div class="panel-actions"><div class="seg"><span>24h</span><span class="on">7d</span><span>30d</span></div></div>
+          </div>
+          <div class="cats">
+            <div class="cat"><div class="cat-name">液压 · 29</div><div class="cat-bar"><i class="amber" style="width:88%"></i></div><div class="cat-num">14</div></div>
+            <div class="cat"><div class="cat-name">发动机 · 72</div><div class="cat-bar"><i class="red" style="width:74%"></i></div><div class="cat-num">12</div></div>
+            <div class="cat"><div class="cat-name">飞控 · 27</div><div class="cat-bar"><i class="cyan" style="width:62%"></i></div><div class="cat-num">10</div></div>
+            <div class="cat"><div class="cat-name">起落架 · 32</div><div class="cat-bar"><i class="violet" style="width:50%"></i></div><div class="cat-num">8</div></div>
+            <div class="cat"><div class="cat-name">电气 · 24</div><div class="cat-bar"><i class="green" style="width:38%"></i></div><div class="cat-num">6</div></div>
+            <div class="cat"><div class="cat-name">客舱 · 25</div><div class="cat-bar"><i class="amber" style="width:25%"></i></div><div class="cat-num">4</div></div>
+            <div class="cat"><div class="cat-name">结构 · 53</div><div class="cat-bar"><i class="cyan" style="width:18%"></i></div><div class="cat-num">3</div></div>
+          </div>
+        </div>
+
+        <!-- Telemetry log -->
+        <div class="panel reveal" style="animation-delay:.48s">
+          <div class="panel-head">
+            <div class="panel-title">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4 17 10 11 4 5"/><path d="M12 19h8"/></svg>
+              系统事件流<small>· LIVE</small>
+            </div>
+            <div class="panel-actions"><span class="pulse"><span class="pulse-dot"></span></span></div>
+          </div>
+          <div class="log">
+            <div class="log-row"><span class="log-time">14:21:08</span><span class="log-lvl warn">WARN</span><span class="log-msg">工具 <b>TK-221</b> 借出超时 4h12m · 持有人 王晓东</span></div>
+            <div class="log-row"><span class="log-time">14:20:42</span><span class="log-lvl info">INFO</span><span class="log-msg">AR-S/2290 已加入学员 <b>李明</b></span></div>
+            <div class="log-row"><span class="log-time">14:19:55</span><span class="log-lvl ok">OK</span><span class="log-msg">工卡 <b>WC-14066</b> 步骤 12/13 完成</span></div>
+            <div class="log-row"><span class="log-time">14:18:31</span><span class="log-lvl info">INFO</span><span class="log-msg">B-2280 出库申请已提交 · 14:35</span></div>
+            <div class="log-row"><span class="log-time">14:17:09</span><span class="log-lvl err">ERR</span><span class="log-msg">FLT-2287 · B-6042 P3 液压压力异常 <b>3,180 psi</b></span></div>
+            <div class="log-row"><span class="log-time">14:15:24</span><span class="log-lvl ok">OK</span><span class="log-msg">手册 <b>AMM-29-32-00</b> 已同步至终端 ×12</span></div>
+            <div class="log-row"><span class="log-time">14:14:02</span><span class="log-lvl info">INFO</span><span class="log-msg">VR课时记录 +2h · 张磊 · 起落架紧急释放</span></div>
+            <div class="log-row"><span class="log-time">14:12:48</span><span class="log-lvl warn">WARN</span><span class="log-msg">B-1907 ATA-72 故障升级 P1 → 排故助手已介入</span></div>
+            <div class="log-row"><span class="log-time">14:10:33</span><span class="log-lvl ok">OK</span><span class="log-msg">签放 <b>WC-14041</b> · B-3318 完成 A-CHECK</span></div>
+          </div>
+        </div>
+
+      </section>
+
+    </div>
+  </main>
+</div>
+
+<script>
+  // live clocks
+  const pad = n => String(n).padStart(2,'0');
+  function tick(){
+    const d = new Date();
+    const utc = `${pad(d.getUTCHours())}:${pad(d.getUTCMinutes())}:${pad(d.getUTCSeconds())}`;
+    const loc = `${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`;
+    const u = document.getElementById('utc'); const l = document.getElementById('local');
+    if(u) u.textContent = utc;
+    if(l) l.textContent = loc;
+  }
+  tick(); setInterval(tick, 1000);
+</script>
+</body>
+</html>

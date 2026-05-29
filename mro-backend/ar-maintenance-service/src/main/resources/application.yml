@@ -1,0 +1,55 @@
+server:
+  port: 8088
+
+spring:
+  application:
+    name: ar-maintenance-service
+  datasource:
+    url: jdbc:mysql://localhost:3306/mro_ar?useUnicode=true&characterEncoding=utf8&serverTimezone=UTC
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      database: 3
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848
+  threads:
+    virtual:
+      enabled: true
+
+dubbo:
+  application:
+    name: ar-maintenance-service
+  registry:
+    address: nacos://localhost:8848
+  protocol:
+    name: dubbo
+    port: 20884
+  consumer:
+    check: false
+
+mybatis-plus:
+  configuration:
+    map-underscore-to-camel-case: true
+    default-enum-type-handler: org.apache.ibatis.type.EnumOrdinalTypeHandler
+  global-config:
+    db-config:
+      id-type: auto
+      logic-delete-field: deleted
+      logic-delete-value: 1
+      logic-not-delete-value: 0
+
+minio:
+  endpoint: http://localhost:9000
+  access-key: minioadmin
+  secret-key: minioadmin
+  bucket-name: mro-ar
+
+logging:
+  level:
+    com.mro.ar: DEBUG

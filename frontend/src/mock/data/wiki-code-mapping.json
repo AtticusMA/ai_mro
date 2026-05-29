@@ -1,0 +1,109 @@
+[
+  { "specId": "CHARTER", "title": "项目宪章", "files": [
+    { "path": "specs/CHARTER.md", "type": "spec" }
+  ]},
+  { "specId": "AUTH-001", "title": "登录与JWT鉴权", "files": [
+    { "path": "src/pages/Login.vue", "type": "page" },
+    { "path": "src/api/auth.js", "type": "api" },
+    { "path": "src/mock/api/auth.js", "type": "mock" },
+    { "path": "src/store/modules/auth.js", "type": "store" },
+    { "path": "src/utils/storage.js", "type": "util" },
+    { "path": "src/router/guards.js", "type": "guard" }
+  ]},
+  { "specId": "SYS-001", "title": "部门管理", "files": [
+    { "path": "src/pages/system/DeptManage.vue", "type": "page" },
+    { "path": "src/api/dept.js", "type": "api" },
+    { "path": "src/mock/api/dept.js", "type": "mock" }
+  ]},
+  { "specId": "SYS-002", "title": "用户管理", "files": [
+    { "path": "src/pages/system/UserManage.vue", "type": "page" },
+    { "path": "src/api/user.js", "type": "api" },
+    { "path": "src/mock/api/user.js", "type": "mock" }
+  ]},
+  { "specId": "SYS-003", "title": "角色管理", "files": [
+    { "path": "src/pages/system/RoleManage.vue", "type": "page" },
+    { "path": "src/api/role.js", "type": "api" },
+    { "path": "src/mock/api/role.js", "type": "mock" }
+  ]},
+  { "specId": "SYS-004", "title": "菜单管理", "files": [
+    { "path": "src/pages/system/MenuManage.vue", "type": "page" },
+    { "path": "src/api/menu.js", "type": "api" },
+    { "path": "src/mock/api/menu.js", "type": "mock" },
+    { "path": "src/components/Sidebar.vue", "type": "component" }
+  ]},
+  { "specId": "SYS-005", "title": "字典管理", "files": [
+    { "path": "src/pages/system/DictManage.vue", "type": "page" },
+    { "path": "src/api/dict.js", "type": "api" },
+    { "path": "src/mock/api/dict.js", "type": "mock" }
+  ]},
+  { "specId": "SYS-006", "title": "数据权限", "files": [
+    { "path": "src/utils/permission.js", "type": "util" },
+    { "path": "src/router/guards.js", "type": "guard" }
+  ]},
+  { "specId": "SYS-007", "title": "操作日志", "files": [
+    { "path": "src/pages/system/OperationLog.vue", "type": "page" },
+    { "path": "src/api/operationLog.js", "type": "api" },
+    { "path": "src/mock/api/operationLog.js", "type": "mock" }
+  ]},
+  { "specId": "SYS-008", "title": "主题配置", "files": [
+    { "path": "src/pages/system/ThemeConfig.vue", "type": "page" },
+    { "path": "src/api/theme.js", "type": "api" },
+    { "path": "src/mock/api/theme.js", "type": "mock" },
+    { "path": "src/store/modules/theme.js", "type": "store" },
+    { "path": "src/utils/theme.js", "type": "util" }
+  ]},
+  { "specId": "PLAT-001", "title": "技术架构", "files": [
+    { "path": "vite.config.js", "type": "config" },
+    { "path": "src/utils/request.js", "type": "util" }
+  ]},
+  { "specId": "PLAT-002", "title": "数据库设计", "files": [] },
+  { "specId": "MRO-001", "title": "飞机健康管理", "files": [
+    { "path": "src/pages/health/Dashboard.vue", "type": "page" },
+    { "path": "src/pages/health/AircraftList.vue", "type": "page" },
+    { "path": "src/pages/health/AircraftDetail.vue", "type": "page" },
+    { "path": "src/pages/health/AlertList.vue", "type": "page" },
+    { "path": "src/pages/health/Statistics.vue", "type": "page" },
+    { "path": "src/api/health.js", "type": "api" },
+    { "path": "src/mock/api/health.js", "type": "mock" }
+  ]},
+  { "specId": "MRO-002", "title": "AR远程协作", "files": [
+    { "path": "src/pages/ar/InspectionList.vue", "type": "page" },
+    { "path": "src/pages/ar/SessionList.vue", "type": "page" },
+    { "path": "src/pages/ar/ArchiveList.vue", "type": "page" },
+    { "path": "src/api/ar.js", "type": "api" },
+    { "path": "src/mock/api/ar.js", "type": "mock" }
+  ]},
+  { "specId": "MRO-003", "title": "智能排故助手", "files": [
+    { "path": "src/pages/tshoot/QueryPage.vue", "type": "page" },
+    { "path": "src/pages/tshoot/KnowledgeBase.vue", "type": "page" },
+    { "path": "src/pages/tshoot/RepairHistory.vue", "type": "page" },
+    { "path": "src/api/tshoot.js", "type": "api" },
+    { "path": "src/mock/api/tshoot.js", "type": "mock" }
+  ]},
+  { "specId": "MRO-004", "title": "技术手册管理", "files": [
+    { "path": "src/pages/manual/ManualList.vue", "type": "page" },
+    { "path": "src/api/manual.js", "type": "api" },
+    { "path": "src/mock/api/manual.js", "type": "mock" }
+  ]},
+  { "specId": "MRO-005", "title": "数字孪生机库", "files": [
+    { "path": "src/pages/hangar/HangarOverview.vue", "type": "page" },
+    { "path": "src/api/hangar.js", "type": "api" },
+    { "path": "src/mock/api/hangar.js", "type": "mock" }
+  ]},
+  { "specId": "MRO-006", "title": "工具航材管理", "files": [
+    { "path": "src/pages/tool/ToolManagement.vue", "type": "page" },
+    { "path": "src/pages/tool/MaterialManagement.vue", "type": "page" },
+    { "path": "src/api/tool.js", "type": "api" },
+    { "path": "src/mock/api/tool.js", "type": "mock" }
+  ]},
+  { "specId": "MRO-007", "title": "VR/AR培训", "files": [
+    { "path": "src/pages/training/TrainingOverview.vue", "type": "page" },
+    { "path": "src/api/training.js", "type": "api" },
+    { "path": "src/mock/api/training.js", "type": "mock" }
+  ]},
+  { "specId": "MRO-008", "title": "无纸化电子工卡", "files": [
+    { "path": "src/pages/workcard/WorkcardList.vue", "type": "page" },
+    { "path": "src/api/workcard.js", "type": "api" },
+    { "path": "src/mock/api/workcard.js", "type": "mock" }
+  ]}
+]

@@ -1,0 +1,975 @@
+[
+  {
+    "domain": "ar",
+    "endpoints": [
+      {
+        "url": "/api/ar/inspections",
+        "method": "GET"
+      },
+      {
+        "url": "/api/ar/inspections",
+        "method": "POST"
+      },
+      {
+        "url": "/api/ar/inspections/:id/start",
+        "method": "PUT"
+      },
+      {
+        "url": "/api/ar/inspections/:id/complete",
+        "method": "PUT"
+      },
+      {
+        "url": "/api/ar/inspections/:id/anomalies",
+        "method": "GET"
+      },
+      {
+        "url": "/api/ar/sessions",
+        "method": "GET"
+      },
+      {
+        "url": "/api/ar/sessions",
+        "method": "POST"
+      },
+      {
+        "url": "/api/ar/sessions/:id/join",
+        "method": "PUT"
+      },
+      {
+        "url": "/api/ar/sessions/:id/end",
+        "method": "PUT"
+      },
+      {
+        "url": "/api/ar/sessions/:id/annotations",
+        "method": "POST"
+      },
+      {
+        "url": "/api/ar/archives",
+        "method": "GET"
+      },
+      {
+        "url": "/api/ar/archives/:id/playback",
+        "method": "GET"
+      }
+    ]
+  },
+  {
+    "domain": "auth",
+    "endpoints": [
+      {
+        "url": "/api/auth/login",
+        "method": "POST"
+      },
+      {
+        "url": "/api/auth/user-info",
+        "method": "GET"
+      },
+      {
+        "url": "/api/auth/logout",
+        "method": "POST"
+      },
+      {
+        "url": "/api/auth/refresh-token",
+        "method": "POST"
+      }
+    ]
+  },
+  {
+    "domain": "dashboard-operation",
+    "endpoints": [
+      {
+        "url": "/api/dashboard/operation",
+        "method": "GET"
+      }
+    ]
+  },
+  {
+    "domain": "dashboard",
+    "endpoints": [
+      {
+        "url": "/api/dashboard/overview",
+        "method": "GET"
+      },
+      {
+        "url": "/api/dashboard/kpis",
+        "method": "GET"
+      },
+      {
+        "url": "/api/dashboard/workcards/active",
+        "method": "GET"
+      },
+      {
+        "url": "/api/dashboard/hangar/bays",
+        "method": "GET"
+      },
+      {
+        "url": "/api/dashboard/ar/live",
+        "method": "GET"
+      },
+      {
+        "url": "/api/dashboard/faults/by-ata",
+        "method": "GET"
+      },
+      {
+        "url": "/api/dashboard/events",
+        "method": "GET"
+      },
+      {
+        "url": "/api/dashboard/system-info",
+        "method": "GET"
+      }
+    ]
+  },
+  {
+    "domain": "dept",
+    "endpoints": [
+      {
+        "url": "/api/system/dept/list",
+        "method": "GET"
+      },
+      {
+        "url": "/api/system/dept/detail",
+        "method": "GET"
+      },
+      {
+        "url": "/api/system/dept/create",
+        "method": "POST"
+      },
+      {
+        "url": "/api/system/dept/update",
+        "method": "PUT"
+      },
+      {
+        "url": "/api/system/dept/remove",
+        "method": "DELETE"
+      }
+    ]
+  },
+  {
+    "domain": "dict",
+    "endpoints": [
+      {
+        "url": "/api/system/dict-type/page",
+        "method": "GET"
+      },
+      {
+        "url": "/api/system/dict-type/detail",
+        "method": "GET"
+      },
+      {
+        "url": "/api/system/dict-type/create",
+        "method": "POST"
+      },
+      {
+        "url": "/api/system/dict-type/update",
+        "method": "PUT"
+      },
+      {
+        "url": "/api/system/dict-type/remove",
+        "method": "DELETE"
+      },
+      {
+        "url": "/api/system/dict-item/list",
+        "method": "GET"
+      },
+      {
+        "url": "/api/system/dict-item/create",
+        "method": "POST"
+      },
+      {
+        "url": "/api/system/dict-item/update",
+        "method": "PUT"
+      },
+      {
+        "url": "/api/system/dict-item/remove",
+        "method": "DELETE"
+      }
+    ]
+  },
+  {
+    "domain": "dtwin",
+    "endpoints": [
+      {
+        "url": "/api/dtwin/hangars",
+        "method": "GET"
+      },
+      {
+        "url": "/api/dtwin/hangars/:id/model",
+        "method": "GET"
+      },
+      {
+        "url": "/api/dtwin/hangars/:id/workstations",
+        "method": "GET"
+      },
+      {
+        "url": "/api/dtwin/plans",
+        "method": "GET"
+      },
+      {
+        "url": "/api/dtwin/plans",
+        "method": "POST"
+      },
+      {
+        "url": "/api/dtwin/plans/:id",
+        "method": "PUT"
+      },
+      {
+        "url": "/api/dtwin/orders",
+        "method": "GET"
+      },
+      {
+        "url": "/api/dtwin/orders",
+        "method": "POST"
+      },
+      {
+        "url": "/api/dtwin/orders/:id/progress",
+        "method": "PUT"
+      },
+      {
+        "url": "/api/dtwin/analytics/workload",
+        "method": "GET"
+      },
+      {
+        "url": "/api/dtwin/analytics/efficiency",
+        "method": "GET"
+      },
+      {
+        "url": "/api/dtwin/tasks",
+        "method": "GET"
+      },
+      {
+        "url": "/api/dtwin/tasks",
+        "method": "POST"
+      },
+      {
+        "url": "/api/dtwin/tasks/:id/status",
+        "method": "PUT"
+      },
+      {
+        "url": "/api/dtwin/dashboard/operation",
+        "method": "GET"
+      },
+      {
+        "url": "/api/dtwin/assignments",
+        "method": "POST"
+      },
+      {
+        "url": "/api/dtwin/assignments",
+        "method": "GET"
+      }
+    ]
+  },
+  {
+    "domain": "hangar",
+    "endpoints": [
+      {
+        "url": "/api/hangar/list",
+        "method": "GET"
+      },
+      {
+        "url": "/api/hangar/detail/:id",
+        "method": "GET"
+      },
+      {
+        "url": "/api/hangar/:id/bays",
+        "method": "GET"
+      },
+      {
+        "url": "/api/hangar/equipment",
+        "method": "GET"
+      },
+      {
+        "url": "/api/hangar/:id/environment",
+        "method": "GET"
+      },
+      {
+        "url": "/api/hangar/schedule",
+        "method": "GET"
+      },
+      {
+        "url": "/api/hangar/schedule",
+        "method": "POST"
+      }
+    ]
+  },
+  {
+    "domain": "health",
+    "endpoints": [
+      {
+        "url": "/api/health/aircraft",
+        "method": "GET"
+      },
+      {
+        "url": "/api/health/aircraft/:id",
+        "method": "GET"
+      },
+      {
+        "url": "/api/health/aircraft/:id/faults",
+        "method": "GET"
+      },
+      {
+        "url": "/api/health/aircraft/:id/predictions",
+        "method": "GET"
+      },
+      {
+        "url": "/api/health/alerts",
+        "method": "GET"
+      },
+      {
+        "url": "/api/health/alerts/:id/acknowledge",
+        "method": "PUT"
+      },
+      {
+        "url": "/api/health/alert-rules",
+        "method": "GET"
+      },
+      {
+        "url": "/api/health/alert-rules",
+        "method": "POST"
+      },
+      {
+        "url": "/api/health/alert-rules/:id",
+        "method": "PUT"
+      },
+      {
+        "url": "/api/health/alert-rules/:id",
+        "method": "DELETE"
+      },
+      {
+        "url": "/api/health/statistics",
+        "method": "GET"
+      },
+      {
+        "url": "/api/health/export",
+        "method": "GET"
+      }
+    ]
+  },
+  {
+    "domain": "manual",
+    "endpoints": [
+      {
+        "url": "/api/manuals",
+        "method": "GET"
+      },
+      {
+        "url": "/api/manuals",
+        "method": "POST"
+      },
+      {
+        "url": "/api/manuals/:id",
+        "method": "GET"
+      },
+      {
+        "url": "/api/manuals/:id",
+        "method": "DELETE"
+      },
+      {
+        "url": "/api/manuals/:id/parse",
+        "method": "POST"
+      },
+      {
+        "url": "/api/manuals/:id/publish",
+        "method": "POST"
+      },
+      {
+        "url": "/api/manuals/:id/versions",
+        "method": "GET"
+      },
+      {
+        "url": "/api/manuals/:id/versions",
+        "method": "POST"
+      },
+      {
+        "url": "/api/manuals/:id/translate",
+        "method": "POST"
+      },
+      {
+        "url": "/api/manuals/translations/:taskId",
+        "method": "GET"
+      },
+      {
+        "url": "/api/manuals/search",
+        "method": "GET"
+      }
+    ]
+  },
+  {
+    "domain": "material-request",
+    "endpoints": [
+      {
+        "url": "/api/material-requests",
+        "method": "GET"
+      },
+      {
+        "url": "/api/material-requests/:id",
+        "method": "GET"
+      },
+      {
+        "url": "/api/material-requests",
+        "method": "POST"
+      },
+      {
+        "url": "/api/material-requests/:id/approve",
+        "method": "POST"
+      },
+      {
+        "url": "/api/material-requests/:id/reject",
+        "method": "POST"
+      },
+      {
+        "url": "/api/material-requests/:id/receive",
+        "method": "POST"
+      },
+      {
+        "url": "/api/workcards/:id/bom",
+        "method": "GET"
+      }
+    ]
+  },
+  {
+    "domain": "menu",
+    "endpoints": [
+      {
+        "url": "/api/system/menu/user",
+        "method": "GET"
+      },
+      {
+        "url": "/api/system/menu/tree",
+        "method": "GET"
+      },
+      {
+        "url": "/api/system/menu/detail",
+        "method": "GET"
+      },
+      {
+        "url": "/api/system/menu/create",
+        "method": "POST"
+      },
+      {
+        "url": "/api/system/menu/update",
+        "method": "PUT"
+      },
+      {
+        "url": "/api/system/menu/remove",
+        "method": "DELETE"
+      }
+    ]
+  },
+  {
+    "domain": "operationLog",
+    "endpoints": [
+      {
+        "url": "/api/system/operation-log",
+        "method": "GET"
+      },
+      {
+        "url": "/api/system/operation-log/:id",
+        "method": "GET"
+      }
+    ]
+  },
+  {
+    "domain": "personnel-license",
+    "endpoints": [
+      {
+        "url": "/api/personnel/licenses",
+        "method": "GET"
+      },
+      {
+        "url": "/api/personnel/licenses/alerts",
+        "method": "GET"
+      },
+      {
+        "url": "/api/personnel/licenses/stats",
+        "method": "GET"
+      },
+      {
+        "url": "/api/personnel/licenses/check-qualification",
+        "method": "POST"
+      },
+      {
+        "url": "/api/personnel/licenses/import",
+        "method": "POST"
+      },
+      {
+        "url": "/api/personnel/licenses/:id",
+        "method": "GET"
+      },
+      {
+        "url": "/api/personnel/licenses",
+        "method": "POST"
+      },
+      {
+        "url": "/api/personnel/licenses/:id",
+        "method": "PUT"
+      },
+      {
+        "url": "/api/personnel/licenses/:id",
+        "method": "DELETE"
+      },
+      {
+        "url": "/api/personnel/licenses/:id/renew",
+        "method": "POST"
+      },
+      {
+        "url": "/api/personnel/licenses/:id/attachment",
+        "method": "POST"
+      }
+    ]
+  },
+  {
+    "domain": "personnel",
+    "endpoints": [
+      {
+        "url": "/api/personnel/list",
+        "method": "GET"
+      },
+      {
+        "url": "/api/personnel/:id",
+        "method": "GET"
+      },
+      {
+        "url": "/api/personnel",
+        "method": "POST"
+      },
+      {
+        "url": "/api/personnel/:id",
+        "method": "PUT"
+      },
+      {
+        "url": "/api/personnel/:id",
+        "method": "DELETE"
+      },
+      {
+        "url": "/api/personnel/alerts",
+        "method": "GET"
+      },
+      {
+        "url": "/api/personnel/license-types",
+        "method": "GET"
+      },
+      {
+        "url": "/api/personnel/check-qualification",
+        "method": "GET"
+      }
+    ]
+  },
+  {
+    "domain": "planning",
+    "endpoints": [
+      {
+        "url": "/api/planning/tasks",
+        "method": "GET"
+      },
+      {
+        "url": "/api/planning/tasks/:id",
+        "method": "GET"
+      },
+      {
+        "url": "/api/planning/tasks",
+        "method": "POST"
+      },
+      {
+        "url": "/api/planning/tasks/:id",
+        "method": "PUT"
+      },
+      {
+        "url": "/api/planning/tasks/:id",
+        "method": "DELETE"
+      },
+      {
+        "url": "/api/planning/workcards/:id/assign",
+        "method": "POST"
+      },
+      {
+        "url": "/api/planning/workload",
+        "method": "GET"
+      },
+      {
+        "url": "/api/planning/available-personnel",
+        "method": "GET"
+      }
+    ]
+  },
+  {
+    "domain": "quality",
+    "endpoints": [
+      {
+        "url": "/api/workcards/pending-sign",
+        "method": "GET"
+      },
+      {
+        "url": "/api/workcards/:id/quality-sign",
+        "method": "GET"
+      },
+      {
+        "url": "/api/workcards/:id/quality-sign",
+        "method": "POST"
+      },
+      {
+        "url": "/api/ncr",
+        "method": "GET"
+      },
+      {
+        "url": "/api/ncr",
+        "method": "POST"
+      },
+      {
+        "url": "/api/ncr/:id/close",
+        "method": "POST"
+      }
+    ]
+  },
+  {
+    "domain": "role",
+    "endpoints": [
+      {
+        "url": "/api/system/role/page",
+        "method": "GET"
+      },
+      {
+        "url": "/api/system/role/list",
+        "method": "GET"
+      },
+      {
+        "url": "/api/system/role/detail",
+        "method": "GET"
+      },
+      {
+        "url": "/api/system/role/create",
+        "method": "POST"
+      },
+      {
+        "url": "/api/system/role/update",
+        "method": "PUT"
+      },
+      {
+        "url": "/api/system/role/remove",
+        "method": "DELETE"
+      }
+    ]
+  },
+  {
+    "domain": "theme",
+    "endpoints": [
+      {
+        "url": "/api/system/theme",
+        "method": "GET"
+      },
+      {
+        "url": "/api/system/theme",
+        "method": "PUT"
+      }
+    ]
+  },
+  {
+    "domain": "tool",
+    "endpoints": [
+      {
+        "url": "/api/tool/cabinets",
+        "method": "GET"
+      },
+      {
+        "url": "/api/tool/cabinets/:id/slots",
+        "method": "GET"
+      },
+      {
+        "url": "/api/tool/cabinets/:id/inventory",
+        "method": "POST"
+      },
+      {
+        "url": "/api/tool/tools",
+        "method": "GET"
+      },
+      {
+        "url": "/api/tool/tools/:id/lifecycle",
+        "method": "GET"
+      },
+      {
+        "url": "/api/tool/borrow",
+        "method": "POST"
+      },
+      {
+        "url": "/api/tool/return",
+        "method": "POST"
+      },
+      {
+        "url": "/api/tool/borrow-records",
+        "method": "GET"
+      },
+      {
+        "url": "/api/tool/alerts",
+        "method": "GET"
+      },
+      {
+        "url": "/api/material/items",
+        "method": "GET"
+      },
+      {
+        "url": "/api/material/items",
+        "method": "POST"
+      },
+      {
+        "url": "/api/material/items/:id",
+        "method": "PUT"
+      },
+      {
+        "url": "/api/material/alerts",
+        "method": "GET"
+      },
+      {
+        "url": "/api/material/repair-orders",
+        "method": "GET"
+      },
+      {
+        "url": "/api/material/repair-orders",
+        "method": "POST"
+      }
+    ]
+  },
+  {
+    "domain": "training",
+    "endpoints": [
+      {
+        "url": "/api/training/scenarios",
+        "method": "GET"
+      },
+      {
+        "url": "/api/training/scenarios",
+        "method": "POST"
+      },
+      {
+        "url": "/api/training/trainees",
+        "method": "GET"
+      },
+      {
+        "url": "/api/training/trainees/:id/profile",
+        "method": "GET"
+      },
+      {
+        "url": "/api/training/sessions",
+        "method": "GET"
+      },
+      {
+        "url": "/api/training/sessions",
+        "method": "POST"
+      },
+      {
+        "url": "/api/training/assessments/:sessionId",
+        "method": "GET"
+      },
+      {
+        "url": "/api/training/reports/individual/:traineeId",
+        "method": "GET"
+      },
+      {
+        "url": "/api/training/reports/overview",
+        "method": "GET"
+      }
+    ]
+  },
+  {
+    "domain": "tshoot",
+    "endpoints": [
+      {
+        "url": "/api/tshoot/knowledge-bases",
+        "method": "GET"
+      },
+      {
+        "url": "/api/tshoot/knowledge-bases",
+        "method": "POST"
+      },
+      {
+        "url": "/api/tshoot/knowledge-bases/:id/documents",
+        "method": "POST"
+      },
+      {
+        "url": "/api/tshoot/knowledge-bases/:id/documents/:docId",
+        "method": "DELETE"
+      },
+      {
+        "url": "/api/tshoot/query",
+        "method": "POST"
+      },
+      {
+        "url": "/api/tshoot/query/:id/result",
+        "method": "GET"
+      },
+      {
+        "url": "/api/tshoot/history",
+        "method": "GET"
+      },
+      {
+        "url": "/api/tshoot/history/statistics",
+        "method": "GET"
+      },
+      {
+        "url": "/api/tshoot/reports",
+        "method": "GET"
+      },
+      {
+        "url": "/api/tshoot/reports/:id",
+        "method": "GET"
+      },
+      {
+        "url": "/api/tshoot/export/:id",
+        "method": "GET"
+      }
+    ]
+  },
+  {
+    "domain": "user",
+    "endpoints": [
+      {
+        "url": "/api/system/user/page",
+        "method": "GET"
+      },
+      {
+        "url": "/api/system/user/detail",
+        "method": "GET"
+      },
+      {
+        "url": "/api/system/user/create",
+        "method": "POST"
+      },
+      {
+        "url": "/api/system/user/update",
+        "method": "PUT"
+      },
+      {
+        "url": "/api/system/user/remove",
+        "method": "DELETE"
+      },
+      {
+        "url": "/api/system/user/reset-password",
+        "method": "PUT"
+      }
+    ]
+  },
+  {
+    "domain": "workcard",
+    "endpoints": [
+      {
+        "url": "/api/workcards",
+        "method": "GET"
+      },
+      {
+        "url": "/api/workcards",
+        "method": "POST"
+      },
+      {
+        "url": "/api/workcards/:id",
+        "method": "GET"
+      },
+      {
+        "url": "/api/workcards/:id",
+        "method": "PUT"
+      },
+      {
+        "url": "/api/workcards/:id/submit",
+        "method": "POST"
+      },
+      {
+        "url": "/api/workcards/:id/approve",
+        "method": "POST"
+      },
+      {
+        "url": "/api/workcards/:id/issue",
+        "method": "POST"
+      },
+      {
+        "url": "/api/workcards/:id/steps/:stepId/complete",
+        "method": "PUT"
+      },
+      {
+        "url": "/api/workcards/:id/sign",
+        "method": "POST"
+      },
+      {
+        "url": "/api/workcards/:id/signatures",
+        "method": "GET"
+      },
+      {
+        "url": "/api/workcards/:id/blockchain-verify",
+        "method": "GET"
+      },
+      {
+        "url": "/api/workcards/progress",
+        "method": "GET"
+      },
+      {
+        "url": "/api/workcards/alerts",
+        "method": "GET"
+      }
+    ]
+  },
+  {
+    "domain": "workcards",
+    "endpoints": [
+      {
+        "url": "/api/workcards",
+        "method": "GET"
+      },
+      {
+        "url": "/api/workcards/:id",
+        "method": "GET"
+      },
+      {
+        "url": "/api/workcards/:id/steps",
+        "method": "GET"
+      },
+      {
+        "url": "/api/workcards/:id/steps/:stepId/confirm",
+        "method": "POST"
+      },
+      {
+        "url": "/api/workcards/:id/checkin",
+        "method": "POST"
+      },
+      {
+        "url": "/api/workcards/:id/checkout",
+        "method": "POST"
+      },
+      {
+        "url": "/api/workcards/:id/photos",
+        "method": "POST"
+      },
+      {
+        "url": "/api/workcards/:id/reports",
+        "method": "POST"
+      },
+      {
+        "url": "/api/workcards/:id/reports",
+        "method": "GET"
+      },
+      {
+        "url": "/api/workcards/progress",
+        "method": "GET"
+      },
+      {
+        "url": "/api/workcards/alerts",
+        "method": "GET"
+      },
+      {
+        "url": "/api/workcards/:workcardId/sign-records",
+        "method": "GET"
+      },
+      {
+        "url": "/api/workcards/sign-records/:id",
+        "method": "GET"
+      },
+      {
+        "url": "/api/workcards/:id/checkin",
+        "method": "POST"
+      },
+      {
+        "url": "/api/workcards/:id/checkout",
+        "method": "POST"
+      },
+      {
+        "url": "/api/workcards/:workcardId/checkins",
+        "method": "GET"
+      }
+    ]
+  }
+]

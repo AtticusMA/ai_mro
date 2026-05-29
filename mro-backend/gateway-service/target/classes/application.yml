@@ -1,0 +1,63 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: gateway-service
+  threads:
+    virtual:
+      enabled: true
+  cloud:
+    nacos:
+      discovery:
+        server-addr: ${NACOS_ADDR:127.0.0.1:8848}
+        namespace: ${NACOS_NAMESPACE:}
+    gateway:
+      discovery:
+        locator:
+          enabled: false
+      routes:
+        # 认证服务（公开路由，不鉴权）
+        - id: auth-service-public
+          uri: lb://auth-service
+          predicates:
+            - Path=/api/auth/login,/api/auth/refresh-token
+          filters:
+            - StripPrefix=0
+
+        # 认证服务（需鉴权路由）
+        - id: auth-service
+          uri: lb://auth-service
+          predicates:
+            - Path=/api/auth/**
+          filters:
+            - StripPrefix=0
+
+        # manage-web BFF（所有其他 /api/** 路由）
+        - id: manage-web
+          uri: lb://manage-web
+          predicates:
+            - Path=/api/**
+          filters:
+            - StripPrefix=0
+
+  data:
+    redis:
+      host: ${REDIS_HOST:127.0.0.1}
+      port: ${REDIS_PORT:6379}
+      password: ${REDIS_PASSWORD:}
+      database: 0
+
+mro:
+  jwt:
+    secret: ${JWT_SECRET:mro-backend-jwt-secret-key-must-be-at-least-256bits}
+  gateway:
+    # 不需要鉴权的路径白名单
+    white-list:
+      - /api/auth/login
+      - /api/auth/refresh-token
+
+logging:
+  level:
+    com.mro: DEBUG
+    org.springframework.cloud.gateway: INFO

@@ -1,0 +1,13 @@
+com\mro\auth\dubbo\AuthDubboServiceImpl.class
+com\mro\auth\AuthApplication.class
+com\mro\auth\dto\LoginRequest.class
+com\mro\auth\dto\RefreshTokenRequest.class
+com\mro\auth\service\AuthService.class
+com\mro\auth\config\JwtProperties.class
+com\mro\auth\dto\LoginResponse.class
+com\mro\auth\config\WebConfig.class
+com\mro\auth\controller\AuthController.class
+com\mro\auth\mapper\SysUserMapper.class
+com\mro\auth\util\JwtUtil.class
+com\mro\auth\dto\ChangePasswordRequest.class
+com\mro\auth\entity\SysUser.class

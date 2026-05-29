@@ -1,0 +1,70 @@
+server:
+  port: 8087
+
+spring:
+  application:
+    name: aircraft-health-service
+  threads:
+    virtual:
+      enabled: true
+  datasource:
+    url: jdbc:mysql://${DB_HOST:127.0.0.1}:${DB_PORT:3306}/mro_aircraft?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai&useSSL=false
+    username: ${DB_USER:root}
+    password: ${DB_PASSWORD:root}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  data:
+    redis:
+      host: ${REDIS_HOST:127.0.0.1}
+      port: ${REDIS_PORT:6379}
+      password: ${REDIS_PASSWORD:}
+      database: 2
+
+  cloud:
+    nacos:
+      discovery:
+        server-addr: ${NACOS_ADDR:127.0.0.1:8848}
+
+  kafka:
+    bootstrap-servers: ${KAFKA_SERVERS:127.0.0.1:9092}
+    consumer:
+      group-id: aircraft-health-service
+      auto-offset-reset: latest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+
+mybatis-plus:
+  mapper-locations: classpath:mapper/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.slf4j.Slf4jImpl
+
+dubbo:
+  application:
+    name: aircraft-health-service
+  protocol:
+    name: dubbo
+    port: 20883
+  registry:
+    address: nacos://${NACOS_ADDR:127.0.0.1:8848}
+
+influxdb:
+  url: ${INFLUXDB_URL:http://127.0.0.1:8086}
+  token: ${INFLUXDB_TOKEN:my-token}
+  org: ${INFLUXDB_ORG:mro}
+  bucket: ${INFLUXDB_BUCKET:aircraft}
+
+mqtt:
+  broker-url: ${MQTT_BROKER:tcp://127.0.0.1:1883}
+  client-id: aircraft-health-service
+  username: ${MQTT_USER:}
+  password: ${MQTT_PASSWORD:}
+  topic:
+    flight-data: aircraft/+/data
+    qar-data: aircraft/+/qar
+
+logging:
+  level:
+    com.mro: DEBUG

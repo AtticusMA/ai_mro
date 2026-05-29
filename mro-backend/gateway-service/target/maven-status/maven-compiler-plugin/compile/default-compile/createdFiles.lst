@@ -1,0 +1,3 @@
+com\mro\gateway\filter\AuthFilter.class
+com\mro\gateway\GatewayApplication.class
+com\mro\gateway\config\GatewayProperties.class

@@ -1,0 +1,10 @@
+{
+  "name": "ui-workspace",
+  "private": true,
+  "version": "0.0.0",
+  "scripts": {
+    "specs:validate": "node specs/_scripts/validate-frontmatter.mjs && node specs/_scripts/check-links.mjs",
+    "specs:traceability": "node specs/_scripts/gen-traceability.mjs",
+    "specs:check": "npm run specs:validate && npm run specs:traceability"
+  }
+}
